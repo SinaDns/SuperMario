@@ -1,0 +1,30 @@
+Index: users.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/users.json b/users.json
+--- a/users.json	
++++ b/users.json	
+@@ -46,17 +46,17 @@
+ }, {
+   "username" : "sina",
+   "password" : "daneshgar",
+-  "allScores" : [ 502 ],
+-  "userCoins" : [ 6 ],
++  "allScores" : [ 0 ],
++  "userCoins" : [ 0 ],
+   "redBought" : true,
+   "pinkBought" : false,
+   "greenBought" : false,
+-  "blackBought" : true,
++  "blackBought" : false,
+   "yellowBought" : false,
+   "redChoose" : true,
+   "pinkChoose" : false,
+   "greenChoose" : false,
+-  "blackChoose" : true,
++  "blackChoose" : false,
+   "yellowChoose" : false
+ }, {
+   "username" : "mamad",
