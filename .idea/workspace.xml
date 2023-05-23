@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2e6008a-6c22-4d74-95a2-94f8f30a3c9e" name="Changes" comment="Adding sitting &amp; Protection Shield for mario." />
+    <list default="true" id="a2e6008a-6c22-4d74-95a2-94f8f30a3c9e" name="Changes" comment="Adding bugged sound effects!">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_22_2023_4_10_PM_[Changes]/shelved.patch" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_22_2023_4_10_PM_[Changes]/shelved.patch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_22_2023_4_10_PM_[Changes]1/shelved.patch" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_22_2023_4_10_PM_[Changes]1/shelved.patch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_22_2023_4_10_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_22_2023_4_10_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_22_2023_4_10_PM__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_22_2023_4_10_PM__Changes_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,28 +109,7 @@
       <option name="project" value="LOCAL" />
       <updated>1684354771496</updated>
     </task>
-    <task id="LOCAL-00002" summary="Adding sitting &amp; Protection Shield for mario.">
-      <created>1684880591565</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1684880591566</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Adding sitting &amp; Protection Shield for mario.">
-      <created>1684881352187</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1684881352187</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Adding sitting &amp; Protection Shield for mario.">
-      <created>1684881758939</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1684881758939</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -141,7 +128,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="Phase2" />
+                        <option value="TEST" />
                       </list>
                     </value>
                   </entry>
@@ -155,7 +142,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="FIRST COMMIT" />
-    <MESSAGE value="Adding sitting &amp; Protection Shield for mario." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding sitting &amp; Protection Shield for mario." />
+    <option name="LAST_COMMIT_MESSAGE" value="FIRST COMMIT" />
   </component>
 </project>
