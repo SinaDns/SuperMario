@@ -1,3 +1,5 @@
+import model.Game;
+
 public class GeneralGame {
 
     Game game;
