@@ -3,17 +3,11 @@ import java.util.ArrayList;
 
 public class LoadSave {
 
-
-
-
 }
 
-
-
-
-//    Game game;
+//    model.Game game;
 //
-//    LoadSave(Game game) {
+//    LoadSave(model.Game game) {
 //        this.game = game;
 //
 //    }
@@ -45,7 +39,6 @@ public class LoadSave {
 //        try {
 //            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("save.dat")));
 //
-//
 //            // read the data storage
 //            DataStorage ds = (DataStorage) ois.readObject();
 //
@@ -54,6 +47,4 @@ public class LoadSave {
 //        } catch (Exception e) {
 //            System.out.println("exception thrown");
 //        }
-//
-//
 //    }
