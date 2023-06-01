@@ -25,7 +25,7 @@ public class AudioPlayer {
     private int currentSongID;
     private float volume = 1f;
     private boolean isSongMuted, isEffectMuted;
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public AudioPlayer() {
         loadSongs();
@@ -54,7 +54,8 @@ public class AudioPlayer {
 
     private Clip getClip(String name) {
         URL url = getClass().getResource("/sounds/" + name + ".wav");
-//        URL url = getClass().getResource(name + ".wav");
+        assert url != null;
+        System.out.println(url.getPath());
         AudioInputStream audioInputStream;
 
         try {

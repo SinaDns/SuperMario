@@ -2,6 +2,7 @@ package view;
 
 import config.ImageAddresses;
 import controller.LevelManager;
+import model.Goompa;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,17 +10,19 @@ import java.awt.image.BufferedImage;
 public class GraphicalEnemies implements Drawable {
 
     LevelManager levelManager;
+    Goompa goompa;
 
-    BufferedImage goompaImage;
+
     BufferedImage spinyImage;
 
-//    BufferedImage
+    int xGoompa = 1600;
+    int yGoompa = 400;
 
 
     public GraphicalEnemies(LevelManager levelManager) {
         this.levelManager = levelManager;
-        spinyImage = ImageAddresses.getPlayerSprite(ImageAddresses.SPINY);
-        goompaImage = ImageAddresses.getPlayerSprite(ImageAddresses.GOOMPA);
+        goompa = new Goompa(xGoompa, yGoompa, levelManager);
+        spinyImage = ImageAddresses.getSprite(ImageAddresses.SPINY);
     }
 
 
@@ -27,11 +30,7 @@ public class GraphicalEnemies implements Drawable {
     public void draw(Graphics g, int xLvlOffset) {
 
 
-        g.drawImage(spinyImage, 1400 - xLvlOffset, 530, 50, 50, null);
-
-
-        g.drawImage(goompaImage, 1600 - xLvlOffset, 400, 50, 50, null);
-
+        g.drawImage(spinyImage, 1400 - xLvlOffset, 330, 50, 50, null);
 
     }
 

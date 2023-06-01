@@ -3,7 +3,6 @@ package model;
 import config.ImageAddresses;
 import controller.LevelManager;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -22,8 +21,8 @@ public class Plant {
 
     Plant(LevelManager levelManager) {
         this.levelManager = levelManager;
-        plantImage = ImageAddresses.getPlayerSprite(ImageAddresses.FLOWER);
-        pashaImage = ImageAddresses.getPlayerSprite(ImageAddresses.PASHA);
+        plantImage = ImageAddresses.getSprite(ImageAddresses.FLOWER);
+        pashaImage = ImageAddresses.getSprite(ImageAddresses.PASHA);
     }
 
 

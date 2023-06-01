@@ -12,7 +12,7 @@ public class GraphicalPipe implements Drawable {
     BufferedImage pipeImage;
 
     public GraphicalPipe(LevelManager levelManager) {
-        pipeImage = ImageAddresses.getPlayerSprite(ImageAddresses.PIPE);
+        pipeImage = ImageAddresses.getSprite(ImageAddresses.PIPE);
         this.levelManager = levelManager;
     }
 

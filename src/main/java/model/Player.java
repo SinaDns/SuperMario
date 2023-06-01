@@ -1,6 +1,7 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import config.ImageAddresses;
 
 import java.awt.*;
@@ -11,11 +12,12 @@ import static config.Constants.PlayerConstants.RUNNING;
 
 public class Player extends Entity {
 
-    public boolean isOnMiniMode = true;
+    public boolean isOnSlimeBlock = false;
+    public boolean isOnMiniMode = false;
     public int marioSelectionNumber = 4;
     public int xLvlOffset;
-    public boolean activeShield = true;
-    @JsonIgnore
+    public boolean activeShield = false;
+    //    @JsonIgnore
     private BufferedImage[] afkAni;
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
@@ -27,6 +29,7 @@ public class Player extends Entity {
     private int maxOffsetX = 3840;
     private float xDrawOffset = 21 * Game.SCALE;
     private float yDrawOffset = 4 * Game.SCALE;
+
     // Jumping + Gravity
     private float airSpeed = 0f;
     private float gravity = 0.04f * Game.SCALE;
@@ -74,12 +77,14 @@ public class Player extends Entity {
                 g.setColor(Color.PINK);
                 g.fillOval((int) (hitBox.x - xDrawOffset) - xLvlOffset - 25, (int) (hitBox.y - yDrawOffset), 65, 65);
                 g.drawImage(afkAni[aniIndex], (int) (hitBox.x - xDrawOffset) - xLvlOffset, (int) (hitBox.y - yDrawOffset), 50, 40, null);
-            } else
+            }
+            else
                 g.drawImage(afkAni[aniIndex], (int) (hitBox.x - xDrawOffset) - xLvlOffset, (int) (hitBox.y - yDrawOffset), 50, 40, null);
-        } else {
+        }
+        else {
             if (activeShield) {
                 g.setColor(Color.PINK);
-                g.fillOval((int) (hitBox.x - xDrawOffset) - xLvlOffset - 25, (int) (hitBox.y - yDrawOffset), 85, 85);
+                g.fillOval((int) (hitBox.x - xDrawOffset) - xLvlOffset - 20, (int) (hitBox.y - yDrawOffset), 85, 85);
                 g.drawImage(afkAni[aniIndex], (int) (hitBox.x - xDrawOffset) - xLvlOffset, (int) (hitBox.y - yDrawOffset), 50, 80, null);
             } else
                 g.drawImage(afkAni[aniIndex], (int) (hitBox.x - xDrawOffset) - xLvlOffset, (int) (hitBox.y - yDrawOffset), 50, 80, null);
@@ -99,9 +104,9 @@ public class Player extends Entity {
     }
 
     private void setAnimation() {
-        if (moving) {
+        if (moving)
             playerAction = RUNNING;
-        } else playerAction = IDLE;
+        else playerAction = IDLE;
     }
 
     private void updatePosition() {
@@ -111,7 +116,6 @@ public class Player extends Entity {
             jump();
         if (!left && !right && !inAir)
             return;
-
 
         float xSpeed = 0;
         float playerSpeed = 2;
@@ -140,7 +144,6 @@ public class Player extends Entity {
         } else
             updateXPos(xSpeed);
 
-
         moving = true;
     }
 
@@ -148,7 +151,11 @@ public class Player extends Entity {
         if (inAir)
             return;
         inAir = true;
-        airSpeed = jumpSpeed;
+
+        if (!isOnSlimeBlock)
+            airSpeed = jumpSpeed;
+        else
+            airSpeed = 1.5f * jumpSpeed;
     }
 
     private void resetInAir() {
@@ -167,11 +174,11 @@ public class Player extends Entity {
 
 
     public void loadAnimations() {
-        BufferedImage imageRed = ImageAddresses.getPlayerSprite(ImageAddresses.RED_MARIO);
-        BufferedImage imagePink = ImageAddresses.getPlayerSprite(ImageAddresses.PINK_MARIO);
-        BufferedImage imageGreen = ImageAddresses.getPlayerSprite(ImageAddresses.GREEN_MARIO);
-        BufferedImage imageYellow = ImageAddresses.getPlayerSprite(ImageAddresses.YELLOW_MARIO);
-        BufferedImage imageBlack = ImageAddresses.getPlayerSprite(ImageAddresses.BLACK_MARIO);
+        BufferedImage imageRed = ImageAddresses.getSprite(ImageAddresses.RED_MARIO);
+        BufferedImage imagePink = ImageAddresses.getSprite(ImageAddresses.PINK_MARIO);
+        BufferedImage imageGreen = ImageAddresses.getSprite(ImageAddresses.GREEN_MARIO);
+        BufferedImage imageYellow = ImageAddresses.getSprite(ImageAddresses.YELLOW_MARIO);
+        BufferedImage imageBlack = ImageAddresses.getSprite(ImageAddresses.BLACK_MARIO);
 
         afkAni = new BufferedImage[2];
 
@@ -217,10 +224,10 @@ public class Player extends Entity {
 
     public boolean canMoveHere(float x, float y, int width, int height) {
 
-        if (!isSolid(x, y))
-            if (!isSolid(x + width, y + height))
-                if (!isSolid(x + width, y))
-                    if (!isSolid(x, y + height))
+        if (isSolid(x, y))
+            if (isSolid(x + width, y + height))
+                if (isSolid(x + width, y))
+                    if (isSolid(x, y + height))
                         return true;
 
         return false;
@@ -229,30 +236,38 @@ public class Player extends Entity {
     public boolean isSolid(float x, float y) {
 
         if (x < 0 || x >= 4 * Game.GAME_WIDTH)
-            return true;
+            return false;
         if (y < 0 || y >= 480)
-            return true;
+            return false;
 
         if (Game.isInSectionOne) {
             // tiles in section 1
             if ((x >= 460 && x <= 690) && (y >= 308 && y <= 385))
-                return true;
+                return false;
+            // slime tile
+            if ((x >= 1000) && (x <= 1102) && (y >= 415) && (y <= 478)) {
+                isOnSlimeBlock = true;
+                return false;
+            }
+
             // pipe
             if ((x <= 3460 && x >= 3350) && (y <= 500 && y >= 360))
-                return true;
+                return false;
         }
 
         if (Game.isInSectionTwo) {
             // tiles in section 2
             if ((x >= 660 && x <= 890) && (y >= 308 && y <= 385))
-                return true;
+                return false;
             // pipe
             if ((x <= 3120 && x >= 3010) && (y <= 500 && y >= 360))
-                return true;
+                return false;
         }
 
+        if (Game.isInSectionOne && (x > 1102 || x < 1000))
+            isOnSlimeBlock = false;
 
-        return false;
+        return true;
     }
 
     public float GetEntityYPosUnderRoofOrAboveFloor(Rectangle hitbox, float airSpeed) {
@@ -270,8 +285,8 @@ public class Player extends Entity {
 
     public boolean IsEntityOnFloor(Rectangle hitbox) {
         // Check the pixel below bottomLeft and bottomRight
-        if (!isSolid(hitbox.x, hitbox.y + hitbox.height + 1))
-            if (!isSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height + 1))
+        if (isSolid(hitbox.x, hitbox.y + hitbox.height + 1))
+            if (isSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height + 1))
                 return false;
 
         if (Game.isInSectionOne)
@@ -286,6 +301,7 @@ public class Player extends Entity {
 
         return true;
     }
+
 
     public BufferedImage[] getAfkAni() {
         return afkAni;

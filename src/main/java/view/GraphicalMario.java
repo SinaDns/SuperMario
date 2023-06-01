@@ -1,6 +1,6 @@
 package view;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 import config.ImageAddresses;
 import model.User;
 
@@ -9,15 +9,12 @@ import java.awt.image.BufferedImage;
 
 public class GraphicalMario implements Drawable{
 
-    @JsonIgnore
+//    @JsonIgnore
     private BufferedImage[] afkAni;
-
 
     GraphicalMario() {
 
     }
-
-
 
     @Override
     public void draw(Graphics g, int xLvlOffset) {
@@ -25,14 +22,12 @@ public class GraphicalMario implements Drawable{
     }
 
 
-
-
     public void loadAnimations() {
-        BufferedImage imageRed = ImageAddresses.getPlayerSprite(ImageAddresses.RED_MARIO);
-        BufferedImage imagePink = ImageAddresses.getPlayerSprite(ImageAddresses.PINK_MARIO);
-        BufferedImage imageGreen = ImageAddresses.getPlayerSprite(ImageAddresses.GREEN_MARIO);
-        BufferedImage imageYellow = ImageAddresses.getPlayerSprite(ImageAddresses.YELLOW_MARIO);
-        BufferedImage imageBlack = ImageAddresses.getPlayerSprite(ImageAddresses.BLACK_MARIO);
+        BufferedImage imageRed = ImageAddresses.getSprite(ImageAddresses.RED_MARIO);
+        BufferedImage imagePink = ImageAddresses.getSprite(ImageAddresses.PINK_MARIO);
+        BufferedImage imageGreen = ImageAddresses.getSprite(ImageAddresses.GREEN_MARIO);
+        BufferedImage imageYellow = ImageAddresses.getSprite(ImageAddresses.YELLOW_MARIO);
+        BufferedImage imageBlack = ImageAddresses.getSprite(ImageAddresses.BLACK_MARIO);
 
         afkAni = new BufferedImage[2];
 
@@ -60,7 +55,6 @@ public class GraphicalMario implements Drawable{
             for (int i = 0; i < afkAni.length; i++) {
                 afkAni[i] = imageBlack.getSubimage(i * 200, 0, 200, 280);
             }
-
     }
 
 

@@ -9,11 +9,12 @@ public class ImageAddresses {
 
 //   public static final String ICON_GAME = "src/MarioPhotos/images.png";
 
-
+    // Items
     public static final String COIN = "spr_coin_0.png";
     public static final String PIPE = "pipe.png";
     public static final String FLOWER = "flower.png";
     public static final String PASHA = "PashaHead.png";
+    public static final String STAR = "Star.png";
 
     public static final String section1 = "IMG_1871.JPG";
     public static final String section2 = "Level1-Section2.jpg";
@@ -33,11 +34,12 @@ public class ImageAddresses {
     public static final String CHECKPOINT_FLAG = "Checkpoint-Flag.png";
 
 
+    // Enemies
     public static final String SPINY = "Spiny.png";
     public static final String GOOMPA = "Goompa.png";
 
 
-    public static BufferedImage getPlayerSprite(String fileName) {
+    public static BufferedImage getSprite (String fileName) {
         File imageFile = new File("D:\\Coding Tutorial\\spam tamrin code\\SuperSuperSuperSuperMariooo\\src\\" + fileName);
         BufferedImage image = null;
 
@@ -46,6 +48,8 @@ public class ImageAddresses {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
 //        BufferedImage image = null;
         //InputStream inputStream = config.ImageAddresses.class.getResourceAsStream("/" + fileName);
 //        try {
@@ -61,7 +65,6 @@ public class ImageAddresses {
 //                e.printStackTrace();
 //            }
 //        }
-
         return image;
     }
 

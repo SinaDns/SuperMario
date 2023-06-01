@@ -14,7 +14,7 @@ public class GraphicalCoin implements Drawable {
     Coin coin;
 
     public GraphicalCoin(LevelManager levelManager, Coin coin) {
-        coinImage = ImageAddresses.getPlayerSprite(ImageAddresses.COIN);
+        coinImage = ImageAddresses.getSprite(ImageAddresses.COIN);
         this.levelManager = levelManager;
         this.coin = coin;
     }

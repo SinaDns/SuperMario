@@ -3,7 +3,6 @@ package model;
 import config.ImageAddresses;
 import controller.LevelManager;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
@@ -11,6 +10,7 @@ public class Coin {
 
     LevelManager levelManager;
     BufferedImage coinImage;
+
     int x;
     int y;
     public int width = 35;
@@ -23,7 +23,7 @@ public class Coin {
 
 
     public Coin(LevelManager levelManager) {
-        coinImage = ImageAddresses.getPlayerSprite(ImageAddresses.COIN);
+        coinImage = ImageAddresses.getSprite(ImageAddresses.COIN);
         this.levelManager = levelManager;
     }
 

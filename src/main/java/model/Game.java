@@ -1,6 +1,7 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+//import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
 import controller.LevelManager;
 import controller.TileManager;
 import view.*;
@@ -12,47 +13,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
-@JsonIncludeProperties (value = {"player", "levelManager", "time"})
+//@JsonIncludeProperties (value = {"player", "levelManager", "time"})
 public class Game implements Runnable {
-
-    private GameFrame gameFrame;
-    private GamePanel gamePanel;
-    private Thread gameThread;
-    private final int FPS = 120;
-    private final int UPS = 200;
-
-
-    private Player player;
-    private LevelManager levelManager;
-    public TileManager tileManager;
-
-    public Coin coin;
-    public Pipe pipe;
-    public Plant plant;
-    public Checkpoint checkpoint;
-    public Enemies enemies;
-
-    GraphicalCoin graphicalCoin;
-    GraphicalPlant graphicalPlant;
-    GraphicalPipe graphicalPipe;
-    GraphicalCheckpoint graphicalCheckpoint;
-    GraphicalEnemies graphicalEnemies;
-
-
-    ArrayList<JFrame> frames;
-
-    Timer timer;
-    int time = 100;
-    public int coins = 0;
-    public int lives = 3;
-    public int score = 0;
-
-    public static boolean isInSectionOne = true;
-    public static boolean isInSectionTwo = false;
-    public boolean isGameEnded;
-
-    public boolean isCalculatedScoreInSectionOne;
-    public boolean isCalculatedScoreInSectionTwo;
 
     public final static float SCALE = 1.5f;
     public final static int TILES_DEFAULT_SIZE = 32;
@@ -61,6 +23,41 @@ public class Game implements Runnable {
     public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
     public final static int GAME_WIDTH = 1280;
     public final static int GAME_HEIGHT = 720;
+    public static boolean isInSectionOne = true;
+    public static boolean isInSectionTwo = false;
+    private final int FPS = 120;
+    private final int UPS = 200;
+    public TileManager tileManager;
+    public Coin coin;
+    public Pipe pipe;
+    public Plant plant;
+    public Checkpoint checkpoint;
+    public Star star;
+    public Enemy enemy;
+    public Goompa goompa;
+    public int coins;
+    public int lives = 3;
+    public int score = 0;
+    public int progressRate;
+    public int progressRisk;
+    public boolean isGameEnded;
+    public boolean isCalculatedScoreInSectionOne;
+    public boolean isCalculatedScoreInSectionTwo;
+
+    GraphicalCoin graphicalCoin;
+    GraphicalPlant graphicalPlant;
+    GraphicalPipe graphicalPipe;
+    GraphicalCheckpoint graphicalCheckpoint;
+    GraphicalEnemies graphicalEnemies;
+    GraphicalStar graphicalStar;
+    ArrayList<JFrame> frames;
+    Timer timer;
+    int time = 100;
+    private GameFrame gameFrame;
+    private GamePanel gamePanel;
+    private Thread gameThread;
+    private Player player;
+    private LevelManager levelManager;
 
 //    LoadSave loadSave = new LoadSave(this);
 
@@ -111,14 +108,28 @@ public class Game implements Runnable {
         checkpoint = new Checkpoint(levelManager);
         graphicalCheckpoint = new GraphicalCheckpoint(levelManager, checkpoint);
 
-        enemies = new Enemies();
+        enemy = new Enemy(1200, 400, levelManager);
         graphicalEnemies = new GraphicalEnemies(levelManager);
+
+        goompa = new Goompa(1600, 400, levelManager);
+
+        star = new Star(640, 500, 48, 48, levelManager);
+        graphicalStar = new GraphicalStar(levelManager);
+
+        tileManager = new TileManager(gamePanel);
 
         if (isInSectionTwo)
             tileManager = new TileManager(gamePanel);
     }
 
     public void update() {
+
+        progressRate = (int) (player.x / 5120);
+        progressRisk = coins * progressRate;
+
+
+        goompa.move();
+
         // Death
         // in section one
         if (isInSectionOne) {
@@ -133,6 +144,13 @@ public class Game implements Runnable {
                     && player.hitBox.y + player.height >= 345 && player.hitBox.y + player.height <= 390) {
                 initClasses();
                 lives--;
+            }
+
+            // star logic
+            if (player.hitBox.x + player.width >= 620 && player.hitBox.x + player.width <= 680
+                    && player.hitBox.y + player.height >= 250 && player.hitBox.y + player.height <= 310) {
+                star.setUsed(true);
+                player.activeShield = true;
             }
         }
         // in section two
@@ -164,7 +182,6 @@ public class Game implements Runnable {
         player.update();
         player.checkCloseToBorder();
     }
-
 
     public void render(Graphics g) {
 
@@ -208,6 +225,11 @@ public class Game implements Runnable {
             graphicalCheckpoint.draw(g, player.xLvlOffset);
 
             graphicalEnemies.draw(g, player.xLvlOffset);
+
+            if (!star.isUsed())
+                graphicalStar.draw(g, player.xLvlOffset);
+
+            tileManager.draw(g, player.xLvlOffset);
 
             if (plant.x1Flower - player.xLvlOffset <= 1000)
                 plant.draw(g, player.xLvlOffset);
@@ -324,7 +346,7 @@ public class Game implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 time--;
-                System.out.println("createTime" + time);
+                System.out.println("createTime: " + time);
             }
         });
     }
@@ -336,7 +358,6 @@ public class Game implements Runnable {
     public void stopTimer() {
         timer.stop();
     }
-
 
     @Override
     public void run() {
@@ -389,9 +410,12 @@ public class Game implements Runnable {
         }
     }
 
-
     public Player getPlayer() {
         return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public GameFrame getGameFrame() {
@@ -424,10 +448,6 @@ public class Game implements Runnable {
 
     public int getUPS() {
         return UPS;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public LevelManager getLevelManager() {
@@ -518,22 +538,6 @@ public class Game implements Runnable {
         this.score = score;
     }
 
-    public static boolean isIsInSectionOne() {
-        return isInSectionOne;
-    }
-
-    public static void setIsInSectionOne(boolean isInSectionOne) {
-        Game.isInSectionOne = isInSectionOne;
-    }
-
-    public static boolean isIsInSectionTwo() {
-        return isInSectionTwo;
-    }
-
-    public static void setIsInSectionTwo(boolean isInSectionTwo) {
-        Game.isInSectionTwo = isInSectionTwo;
-    }
-
     public boolean isGameEnded() {
         return isGameEnded;
     }
@@ -556,5 +560,21 @@ public class Game implements Runnable {
 
     public void setCalculatedScoreInSectionTwo(boolean calculatedScoreInSectionTwo) {
         isCalculatedScoreInSectionTwo = calculatedScoreInSectionTwo;
+    }
+
+    public static boolean isIsInSectionOne() {
+        return isInSectionOne;
+    }
+
+    public static void setIsInSectionOne(boolean isInSectionOne) {
+        Game.isInSectionOne = isInSectionOne;
+    }
+
+    public static boolean isIsInSectionTwo() {
+        return isInSectionTwo;
+    }
+
+    public static void setIsInSectionTwo(boolean isInSectionTwo) {
+        Game.isInSectionTwo = isInSectionTwo;
     }
 }

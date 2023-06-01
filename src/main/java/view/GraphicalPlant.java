@@ -22,8 +22,8 @@ public class GraphicalPlant implements Drawable {
     public GraphicalPlant(LevelManager levelManager, Plant plant) {
         this.levelManager = levelManager;
         this.plant = plant;
-        plantImage = ImageAddresses.getPlayerSprite(ImageAddresses.FLOWER);
-        pashaImage = ImageAddresses.getPlayerSprite(ImageAddresses.PASHA);
+        plantImage = ImageAddresses.getSprite(ImageAddresses.FLOWER);
+        pashaImage = ImageAddresses.getSprite(ImageAddresses.PASHA);
     }
 
     @Override

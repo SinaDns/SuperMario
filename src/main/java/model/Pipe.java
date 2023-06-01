@@ -12,7 +12,7 @@ public class Pipe {
     BufferedImage pipeImage;
 
     public Pipe(LevelManager levelManager) {
-        pipeImage = ImageAddresses.getPlayerSprite(ImageAddresses.PIPE);
+        pipeImage = ImageAddresses.getSprite(ImageAddresses.PIPE);
         this.levelManager = levelManager;
     }
 

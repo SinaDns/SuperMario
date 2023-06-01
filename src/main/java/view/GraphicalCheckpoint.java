@@ -14,7 +14,7 @@ public class GraphicalCheckpoint implements Drawable {
     Checkpoint checkpoint;
 
     public GraphicalCheckpoint(LevelManager levelManager, Checkpoint checkpoint) {
-        checkPointImage = ImageAddresses.getPlayerSprite(ImageAddresses.CHECKPOINT_FLAG);
+        checkPointImage = ImageAddresses.getSprite(ImageAddresses.CHECKPOINT_FLAG);
         this.levelManager = levelManager;
         this.checkpoint = checkpoint;
     }
