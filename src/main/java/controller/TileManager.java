@@ -15,7 +15,6 @@ public class TileManager implements Drawable {
     GamePanel gamePanel;
 
     public TileManager(GamePanel gamePanel) {
-
         this.gamePanel = gamePanel;
         tiles = new Tile[6];
 
@@ -46,29 +45,14 @@ public class TileManager implements Drawable {
     @Override
     public void draw(Graphics g, int xLvlOffset) {
 
-//        g2D.drawImage(tiles[0].image, 431, 311, 48, 48, null);
-//        g2D.drawImage(tiles[0].image, 481, 311, 48, 48, null);
-//        g2D.drawImage(tiles[1].image, 531, 311, 48, 48, null);
-//        g2D.drawImage(tiles[0].image, 581, 311, 48, 48, null);
-//        g2D.drawImage(tiles[0].image, 631, 311, 48, 48, null);
-
-        for (int i = 0; i < 33; i++)
+        for (int i = 0; i < 39; i++) {
             g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500, 48, 48, null);
-
-        for (int i = 0; i < 33; i++)
             g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48, 48, 48, null);
-
-        for (int i = 0; i < 33; i++)
             g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48, 48, 48, null);
-
-        for (int i = 0; i < 33; i++)
             g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48, 48, 48, null);
-
-        for (int i = 0; i < 33; i++)
             g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48 + 48, 48, 48, null);
+        }
 
-        for (int i = 0; i < 66; i++)
-            g.drawImage(tiles[2].image, 2000 + (48 * i) - xLvlOffset, 500 + 48 + 48, 48, 48, null);
 
         for (int i = 0; i < 5; i++)
             g.drawImage(tiles[1].image, 2000 + (48 * i) - xLvlOffset, 350, 48, 48, null);
@@ -76,11 +60,17 @@ public class TileManager implements Drawable {
         g.drawImage(tiles[5].image, 2000 - xLvlOffset, 350, 48, 48, null);
 
 
+//        if (Game.isInBossFight) {
+//            for (int i = 0; i < 27; i++) {
+//                g.drawImage(tiles[1].image, (48 * i) - xLvlOffset, 0, 48, 48, null);
+//            }
+//        }
+
         // Drawing Slime Block
-        if (Game.isInSectionOne)
+        if (Game.isInLevelOne && Game.isInSectionOne)
             g.drawImage(tiles[4].image, 1000 - xLvlOffset, 430, 48, 48, null);
 
-        if (Game.isInSectionTwo)
-            g.drawImage(tiles[4].image, 1500 - xLvlOffset, 330, 48, 48, null);
+        if (Game.isInLevelOne && Game.isInSectionTwo)
+            g.drawImage(tiles[4].image, 1000 - xLvlOffset, 430, 48, 48, null);
     }
 }

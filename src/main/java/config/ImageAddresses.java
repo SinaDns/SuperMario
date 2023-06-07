@@ -15,6 +15,8 @@ public class ImageAddresses {
     public static final String FLOWER = "flower.png";
     public static final String PASHA = "PashaHead.png";
     public static final String STAR = "Star.png";
+    public static final String HEALTH_BAR = "health-bar.png";
+    public static final String HEALTH_BAR_2 = "HealthBar.png";
 
     public static final String section1 = "IMG_1871.JPG";
     public static final String section2 = "Level1-Section2.jpg";
@@ -33,6 +35,9 @@ public class ImageAddresses {
 
     public static final String CHECKPOINT_FLAG = "Checkpoint-Flag.png";
 
+    // Boss
+    public static final String BOSS = "ogre_magi.png";
+    public static final String TRIGGERED_BOSS = "ogre_magi_arcana.png";
 
     // Enemies
     public static final String SPINY = "Spiny.png";

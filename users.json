@@ -73,19 +73,4 @@
   "greenChoose" : false,
   "blackChoose" : false,
   "yellowChoose" : false
-}, {
-  "username" : "mehdi",
-  "password" : "1234",
-  "allScores" : [ 421 ],
-  "userCoins" : [ 12 ],
-  "redBought" : true,
-  "pinkBought" : false,
-  "greenBought" : true,
-  "blackBought" : false,
-  "yellowBought" : false,
-  "redChoose" : true,
-  "pinkChoose" : false,
-  "greenChoose" : true,
-  "blackChoose" : false,
-  "yellowChoose" : false
 } ]

@@ -118,7 +118,7 @@ public class Player extends Entity {
             return;
 
         float xSpeed = 0;
-        float playerSpeed = 2;
+        float playerSpeed = 5;
         if (left)
             xSpeed -= playerSpeed;
         if (right)
@@ -240,7 +240,10 @@ public class Player extends Entity {
         if (y < 0 || y >= 480)
             return false;
 
-        if (Game.isInSectionOne) {
+        if (Game.isInBossFight && (x > Game.GAME_WIDTH) )
+            return false;
+
+        if (Game.isInLevelOne && Game.isInSectionOne) {
             // tiles in section 1
             if ((x >= 460 && x <= 690) && (y >= 308 && y <= 385))
                 return false;
@@ -255,7 +258,7 @@ public class Player extends Entity {
                 return false;
         }
 
-        if (Game.isInSectionTwo) {
+        if (Game.isInLevelOne && Game.isInSectionTwo) {
             // tiles in section 2
             if ((x >= 660 && x <= 890) && (y >= 308 && y <= 385))
                 return false;
@@ -264,7 +267,7 @@ public class Player extends Entity {
                 return false;
         }
 
-        if (Game.isInSectionOne && (x > 1102 || x < 1000))
+        if (Game.isInLevelOne && Game.isInSectionOne && (x > 1102 || x < 1000))
             isOnSlimeBlock = false;
 
         return true;

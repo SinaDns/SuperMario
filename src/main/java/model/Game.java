@@ -23,8 +23,15 @@ public class Game implements Runnable {
     public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
     public final static int GAME_WIDTH = 1280;
     public final static int GAME_HEIGHT = 720;
+
+    public static boolean isInLevelOne = false;
+    public static boolean isInLevelTwo = false;
+    public static boolean isInLevelThree = false;
+
     public static boolean isInSectionOne = true;
     public static boolean isInSectionTwo = false;
+    public static boolean isInBossFight = true;
+
     private final int FPS = 120;
     private final int UPS = 200;
     public TileManager tileManager;
@@ -35,6 +42,8 @@ public class Game implements Runnable {
     public Star star;
     public Enemy enemy;
     public Goompa goompa;
+    public OgreMagi ogreMagi;
+
     public int coins;
     public int lives = 3;
     public int score = 0;
@@ -43,7 +52,7 @@ public class Game implements Runnable {
     public boolean isGameEnded;
     public boolean isCalculatedScoreInSectionOne;
     public boolean isCalculatedScoreInSectionTwo;
-
+    GraphicalOgreMagi graphicalOgreMagi;
     GraphicalCoin graphicalCoin;
     GraphicalPlant graphicalPlant;
     GraphicalPipe graphicalPipe;
@@ -73,6 +82,22 @@ public class Game implements Runnable {
         startGameLoop();
     }
 
+    public static boolean isIsInSectionOne() {
+        return isInSectionOne;
+    }
+
+    public static void setIsInSectionOne(boolean isInSectionOne) {
+        Game.isInSectionOne = isInSectionOne;
+    }
+
+    public static boolean isIsInSectionTwo() {
+        return isInSectionTwo;
+    }
+
+    public static void setIsInSectionTwo(boolean isInSectionTwo) {
+        Game.isInSectionTwo = isInSectionTwo;
+    }
+
     public void showPanel() {
         gamePanel = new GamePanel(this);
         gameFrame = new GameFrame(gamePanel);
@@ -85,17 +110,35 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        player = new Player(40, 300, 50, 80);
+        player = new Player(50, 100, 50, 80);
         time = 100;
 
-        if (isInSectionOne)
-            levelManager = new LevelManager(this, 1);
 
-        else if (isInSectionTwo)
-            levelManager = new LevelManager(this, 2);
+        if (isInSectionOne && isInLevelOne) {
+            levelManager = new LevelManager(this, 1, 1);
+        }
+
+        else if (isInSectionTwo && isInLevelOne) {
+            levelManager = new LevelManager(this, 1, 2);
+        }
+
+        else if (isInSectionOne && isInLevelTwo) {
+            levelManager = new LevelManager(this, 2, 1);
+        }
+
+        else if (isInSectionTwo && isInLevelTwo) {
+            levelManager = new LevelManager(this, 2, 2);
+        }
+
+        else if (isInBossFight) {
+            levelManager = new LevelManager(this, 4, 1);
+        }
+
+        // Making Boss
+        ogreMagi = new OgreMagi(levelManager);
+        graphicalOgreMagi = new GraphicalOgreMagi(levelManager, ogreMagi);
 
 
-        // creating new coins
         coin = new Coin(levelManager);
         graphicalCoin = new GraphicalCoin(levelManager, coin);
 
@@ -127,8 +170,7 @@ public class Game implements Runnable {
         progressRate = (int) (player.x / 5120);
         progressRisk = coins * progressRate;
 
-
-        goompa.move();
+//        goompa.move();
 
         // Death
         // in section one
@@ -176,6 +218,8 @@ public class Game implements Runnable {
             new MainFrame();
             isInSectionOne = true;
             isInSectionTwo = false;
+            isInLevelOne = true;
+            isInLevelTwo = false;
             isGameEnded = false;
         }
 
@@ -185,96 +229,164 @@ public class Game implements Runnable {
 
     public void render(Graphics g) {
 
-        if (player.hitBox.x >= 5000 && levelManager.sectionNumber == 1) {
+        // TEST PRINTS:
+        System.out.println("level: " + levelManager.levelNumber + " / section: " + levelManager.sectionNumber);
+        System.out.println("in level one: " + isInLevelOne + " / in level two: " + isInLevelTwo);
+        System.out.println("in section one: " + isInSectionOne + " / in section two: " + isInSectionTwo);
+
+        /* ----------------------------------------- MOVING TO NEXT PART -------------------------------------------- */
+        // Level 1 ... Section 1 going to 2
+        if (player.hitBox.x >= 5000 && levelManager.levelNumber == 1 && levelManager.sectionNumber == 1) {
             levelManager.sectionNumber = 2;
             isInSectionOne = false;
             isInSectionTwo = true;
             initClasses();
         }
 
-
-        // SECTION ONE
-        if (levelManager.sectionNumber == 1) {
-            levelManager.draw(g, player.xLvlOffset, lives, coins, score);
-
-            // eating the coins
-            if ((player.hitBox.x <= 485 && player.hitBox.x >= 450)
-                    && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 260))
-                coin.drawingCoinsAtSectionOne[0] = true;
-            if ((player.hitBox.x <= 735 && player.hitBox.x >= 700)
-                    && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                coin.drawingCoinsAtSectionOne[1] = true;
-            if ((player.hitBox.x <= 835 && player.hitBox.x >= 800)
-                    && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                coin.drawingCoinsAtSectionOne[2] = true;
-            if ((player.hitBox.x <= 1435 && player.hitBox.x >= 1400)
-                    && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 290))
-                coin.drawingCoinsAtSectionOne[3] = true;
-            if ((player.hitBox.x <= 1785 && player.hitBox.x >= 1750)
-                    && (player.hitBox.y + player.height <= 440 && player.hitBox.y + player.height >= 350))
-                coin.drawingCoinsAtSectionOne[4] = true;
-            if ((player.hitBox.x <= 2035 && player.hitBox.x >= 2000)
-                    && (player.hitBox.y + player.height <= 350 && player.hitBox.y + player.height >= 300))
-                coin.drawingCoinsAtSectionOne[5] = true;
-            if ((player.hitBox.x <= 2535 && player.hitBox.x >= 2500)
-                    && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                coin.drawingCoinsAtSectionOne[6] = true;
-
-
-            graphicalCoin.draw(g, player.xLvlOffset);
-            graphicalCheckpoint.draw(g, player.xLvlOffset);
-
-            graphicalEnemies.draw(g, player.xLvlOffset);
-
-            if (!star.isUsed())
-                graphicalStar.draw(g, player.xLvlOffset);
-
-            tileManager.draw(g, player.xLvlOffset);
-
-            if (plant.x1Flower - player.xLvlOffset <= 1000)
-                plant.draw(g, player.xLvlOffset);
+        // Level 1 ... Section 2 Ending
+        if (player.hitBox.x >= 5000 && levelManager.levelNumber == 1 && levelManager.sectionNumber == 2) {
+            levelManager.levelNumber = 2;
+            levelManager.sectionNumber = 1;
+            isInSectionOne = true;
+            isInSectionTwo = false;
+            initClasses();
         }
 
+        // Level 2 ... Section 1 going to 2
+        if (player.hitBox.x >= 4970 && levelManager.levelNumber == 2 && levelManager.sectionNumber == 1) {
+            System.out.println("az 2-1 raftam 2-2");
+            levelManager.sectionNumber = 2;
+            isInSectionOne = false;
+            isInSectionTwo = true;
+            initClasses();
+        }
 
-        // SECTION TWO
-        if (levelManager.sectionNumber == 2) {
-            levelManager.draw(g, player.xLvlOffset, lives, coins, score);
+        // Level 2 ... Section 2 Ending ... Starting Boss Fights
+        if (player.hitBox.x >= 5000 && levelManager.levelNumber == 2 && levelManager.sectionNumber == 2) {
+            System.out.println("az 2-2 raftam boss");
+            levelManager.levelNumber = 4;
+            isInSectionOne = true;
+            isInSectionTwo = false;
+            initClasses();
+        }
+        /* -------------------------------------------------------------------------------------------------------- */
 
-            // eating the coins
-            if ((player.hitBox.x <= 635 && player.hitBox.x >= 600)
-                    && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 260))
-                coin.drawingCoinsAtSectionTwo[0] = true;
-            if ((player.hitBox.x <= 885 && player.hitBox.x >= 850)
-                    && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                coin.drawingCoinsAtSectionTwo[1] = true;
-            if ((player.hitBox.x <= 1135 && player.hitBox.x >= 1100)
-                    && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                coin.drawingCoinsAtSectionTwo[2] = true;
-            if ((player.hitBox.x <= 1585 && player.hitBox.x >= 1550)
-                    && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 290))
-                coin.drawingCoinsAtSectionTwo[3] = true;
-            if ((player.hitBox.x <= 1785 && player.hitBox.x >= 1750)
-                    && (player.hitBox.y + player.height <= 440 && player.hitBox.y + player.height >= 350))
-                coin.drawingCoinsAtSectionTwo[4] = true;
-            if ((player.hitBox.x <= 2035 && player.hitBox.x >= 2000)
-                    && (player.hitBox.y + player.height <= 335 && player.hitBox.y + player.height >= 300))
-                coin.drawingCoinsAtSectionTwo[5] = true;
-            if ((player.hitBox.x <= 3535 && player.hitBox.x >= 3500)
-                    && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                coin.drawingCoinsAtSectionTwo[6] = true;
+        /* ------------------------------------------------- LEVEL 1 --------------------------------------------- */
+        // LEVEL ONE DESIGNS
+        if (levelManager.levelNumber == 1) {
+            // SECTION ONE
+            if (levelManager.sectionNumber == 1) {
+                levelManager.draw(g, player.xLvlOffset, lives, coins, score);
 
-            graphicalCoin.draw(g, player.xLvlOffset);
+                // eating the coins
+                if ((player.hitBox.x <= 485 && player.hitBox.x >= 450)
+                        && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 260))
+                    coin.drawingCoinsAtSectionOne[0] = true;
+                if ((player.hitBox.x <= 735 && player.hitBox.x >= 700)
+                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+                    coin.drawingCoinsAtSectionOne[1] = true;
+                if ((player.hitBox.x <= 835 && player.hitBox.x >= 800)
+                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+                    coin.drawingCoinsAtSectionOne[2] = true;
+                if ((player.hitBox.x <= 1435 && player.hitBox.x >= 1400)
+                        && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 290))
+                    coin.drawingCoinsAtSectionOne[3] = true;
+                if ((player.hitBox.x <= 1785 && player.hitBox.x >= 1750)
+                        && (player.hitBox.y + player.height <= 440 && player.hitBox.y + player.height >= 350))
+                    coin.drawingCoinsAtSectionOne[4] = true;
+                if ((player.hitBox.x <= 2035 && player.hitBox.x >= 2000)
+                        && (player.hitBox.y + player.height <= 350 && player.hitBox.y + player.height >= 300))
+                    coin.drawingCoinsAtSectionOne[5] = true;
+                if ((player.hitBox.x <= 2535 && player.hitBox.x >= 2500)
+                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+                    coin.drawingCoinsAtSectionOne[6] = true;
 
-            if (plant.x2Flower - player.xLvlOffset <= 1000) {
-                plant.draw(g, player.xLvlOffset);
+
+
+
+                graphicalCoin.draw(g, player.xLvlOffset);
+                graphicalCheckpoint.draw(g, player.xLvlOffset);
+
+                graphicalEnemies.draw(g, player.xLvlOffset);
+
+                if (!star.isUsed())
+                    graphicalStar.draw(g, player.xLvlOffset);
+
+                tileManager.draw(g, player.xLvlOffset);
+
+                if (plant.x1Flower - player.xLvlOffset <= 1000)
+                    plant.draw(g, player.xLvlOffset);
             }
 
+            // SECTION TWO
+            if (levelManager.sectionNumber == 2) {
+                levelManager.draw(g, player.xLvlOffset, lives, coins, score);
+
+                // eating the coins
+                if ((player.hitBox.x <= 635 && player.hitBox.x >= 600)
+                        && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 260))
+                    coin.drawingCoinsAtSectionTwo[0] = true;
+                if ((player.hitBox.x <= 885 && player.hitBox.x >= 850)
+                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+                    coin.drawingCoinsAtSectionTwo[1] = true;
+                if ((player.hitBox.x <= 1135 && player.hitBox.x >= 1100)
+                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+                    coin.drawingCoinsAtSectionTwo[2] = true;
+                if ((player.hitBox.x <= 1585 && player.hitBox.x >= 1550)
+                        && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 290))
+                    coin.drawingCoinsAtSectionTwo[3] = true;
+                if ((player.hitBox.x <= 1785 && player.hitBox.x >= 1750)
+                        && (player.hitBox.y + player.height <= 440 && player.hitBox.y + player.height >= 350))
+                    coin.drawingCoinsAtSectionTwo[4] = true;
+                if ((player.hitBox.x <= 2035 && player.hitBox.x >= 2000)
+                        && (player.hitBox.y + player.height <= 335 && player.hitBox.y + player.height >= 300))
+                    coin.drawingCoinsAtSectionTwo[5] = true;
+                if ((player.hitBox.x <= 3535 && player.hitBox.x >= 3500)
+                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+                    coin.drawingCoinsAtSectionTwo[6] = true;
+
+                graphicalCoin.draw(g, player.xLvlOffset);
+
+                if (plant.x2Flower - player.xLvlOffset <= 1000)
+                    plant.draw(g, player.xLvlOffset);
+
+                tileManager.draw(g, player.xLvlOffset);
+            }
         }
+        /* -------------------------------------------------------------------------------------------------------- */
+
+        /* ------------------------------------------------- LEVEL 2 --------------------------------------------- */
+
+        // LEVEL TWO DESIGNS
+        if (levelManager.levelNumber == 2) {
+            // SECTION ONE
+            if (levelManager.sectionNumber == 1) {
+                tileManager.draw(g, player.xLvlOffset);
+            }
 
 
-        // TIME
+            // SECTION TWO
+            if (levelManager.sectionNumber == 2) {
+                tileManager.draw(g, player.xLvlOffset);
+                graphicalCoin.draw(g, player.xLvlOffset);
+            }
+        }
+        /* -------------------------------------------------------------------------------------------------------- */
+
+        /* ------------------------------------------------- BOSS_FIGHT --------------------------------------------- */
+        // LEVEL 4 (BOSS FIGHT) DESIGNS
+        if (levelManager.levelNumber == 4) {
+            levelManager.draw(g, player.xLvlOffset, lives, coins, score);
+            graphicalOgreMagi.draw(g, player.xLvlOffset);
+            ogreMagi.move();
+        }
+        /* ---------------------------------------------------------------------------------------------------------- */
+
+        /* ------------------------------------------------- TIME ------------------------------------------------ */
+        // TIME MECHANISM
+        g.setColor(Color.black);
         g.setFont(new Font("Courier", Font.BOLD, 40));
-        g.drawString("Time: " + time, 800, 40);
+        g.drawString("Time: " + time, 740, 40);
 
         if (time == -1) {
             lives--;
@@ -282,6 +394,9 @@ public class Game implements Runnable {
             isInSectionOne = true;
             initClasses();
         }
+        /* -------------------------------------------------------------------------------------------------------- */
+
+        /* -------------------------------------------------- LIFE ------------------------------------------------- */
 
         if (lives == 0) {
             isGameEnded = true;
@@ -291,6 +406,10 @@ public class Game implements Runnable {
             new MainFrame();
         }
 
+        /* -------------------------------------------------------------------------------------------------------- */
+
+        /* ----------------------------------------- CALCULATE MECHANISM ------------------------------------- */
+
         // Updating the Score
         if (player.hitBox.x >= 4950 && !isCalculatedScoreInSectionOne) {
             calculatingScore();
@@ -299,10 +418,15 @@ public class Game implements Runnable {
             isInSectionTwo = true;
         }
 
-        if (player.hitBox.x >= 4950 && !isCalculatedScoreInSectionTwo) {
+        if (player.hitBox.x >= 4950 && levelManager.sectionNumber == 2 && !isCalculatedScoreInSectionTwo) {
             calculatingScore();
+            isCalculatedScoreInSectionTwo = true;
+            isInSectionOne = true;
+            isInSectionTwo = false;
+            isInLevelOne = false;
+            isInLevelTwo = true;
         }
-
+        /* -------------------------------------------------------------------------------------------------------- */
 
         pipe.draw(g, player.xLvlOffset);
         player.render(g, player.xLvlOffset);
@@ -325,8 +449,6 @@ public class Game implements Runnable {
                 }
             }
             score += (10 * coins) + (20 * lives) + (time);
-            isCalculatedScoreInSectionTwo = true;
-            isGameEnded = true;
         }
 
         if (User.loggedInUser.get(0).allScores.get(0) <= score)
@@ -560,21 +682,5 @@ public class Game implements Runnable {
 
     public void setCalculatedScoreInSectionTwo(boolean calculatedScoreInSectionTwo) {
         isCalculatedScoreInSectionTwo = calculatedScoreInSectionTwo;
-    }
-
-    public static boolean isIsInSectionOne() {
-        return isInSectionOne;
-    }
-
-    public static void setIsInSectionOne(boolean isInSectionOne) {
-        Game.isInSectionOne = isInSectionOne;
-    }
-
-    public static boolean isIsInSectionTwo() {
-        return isInSectionTwo;
-    }
-
-    public static void setIsInSectionTwo(boolean isInSectionTwo) {
-        Game.isInSectionTwo = isInSectionTwo;
     }
 }
