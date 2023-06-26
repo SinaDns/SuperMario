@@ -14,7 +14,7 @@ public class GamePanel extends JPanel {
     TileManager tileM = new TileManager(this);
 
     public GamePanel(Game game) {
-        this.setBackground(new Color(34, 87, 109));
+//        this.setBackground(new Color(86, 126, 144));
         this.game = game;
 
         setPanelSize();
@@ -30,6 +30,7 @@ public class GamePanel extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
 
         // one more sprite of mario
 //        g.drawImage(new ImageIcon(config.ImageAddresses.CHARACTER3).getImage(), 200, 200, 50, 80, this);

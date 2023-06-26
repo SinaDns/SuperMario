@@ -1,6 +1,7 @@
 package config;
 
 import javax.imageio.ImageIO;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class ImageAddresses {
     public static final String STAR = "Star.png";
     public static final String HEALTH_BAR = "health-bar.png";
     public static final String HEALTH_BAR_2 = "HealthBar.png";
+    // *******
 
     public static final String section1 = "IMG_1871.JPG";
     public static final String section2 = "Level1-Section2.jpg";
@@ -26,6 +28,7 @@ public class ImageAddresses {
     public static final String YELLOW_MARIO = "YellowMario.png";
     public static final String PINK_MARIO = "PinkMario.png";
     public static final String GREEN_MARIO = "GreenMario.png";
+    public static final String ICY_MARIO = "IcyMario.png";
 
     public static final String STORE_RED = "StoreRed.png";
     public static final String STORE_BLACK = "StoreBlack.png";
@@ -42,6 +45,10 @@ public class ImageAddresses {
     // Enemies
     public static final String SPINY = "Spiny.png";
     public static final String GOOMPA = "Goompa.png";
+    public static final String KOOPA = "Turtle.png";
+    public static final String NUKEBIRD = "NukeBird.png";
+    public static final String BOMB = "Bomb.png";
+
 
 
     public static BufferedImage getSprite (String fileName) {

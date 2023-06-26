@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class Pipe {
 
+    public int x;
+    public int y;
     LevelManager levelManager;
     BufferedImage pipeImage;
 
@@ -17,12 +19,4 @@ public class Pipe {
     }
 
 
-    public void draw(Graphics g, int xlvloffset) {
-
-        if (levelManager.sectionNumber == 1)
-            g.drawImage(pipeImage, 3340 - xlvloffset, 390, 90, 110, null);
-
-        else if (levelManager.sectionNumber == 2)
-            g.drawImage(pipeImage, 3000 - xlvloffset, 390, 90, 110, null);
-    }
 }

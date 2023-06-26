@@ -2,19 +2,21 @@ package model;
 
 import controller.LevelManager;
 
-public class Goompa extends Enemy implements Moveable {
-    public int x;
-    public int y;
+public class Goompa implements Moveable {
+
+    LevelManager levelManager;
+    public int x = 1600;
+    public int y = 230;
     int width;
     int height;
-    double goombaSpeed = 0.01;
+    float goombaSpeed = 0.03f;
 
-    public Goompa(int x, int y, LevelManager levelManager) {
-        super(x, y, levelManager);
+    public Goompa(LevelManager levelManager) {
+        this.levelManager = levelManager;
     }
 
     public void move() {
-        this.x += goombaSpeed;
+        x -= goombaSpeed;
     }
 
 }

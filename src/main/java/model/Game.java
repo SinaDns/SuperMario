@@ -24,13 +24,17 @@ public class Game implements Runnable {
     public final static int GAME_WIDTH = 1280;
     public final static int GAME_HEIGHT = 720;
 
-    public static boolean isInLevelOne = false;
+    public final int BOUND_TO_NEXT_SECTION = 6300;
+
+    public static boolean isInLevelOne = true;
     public static boolean isInLevelTwo = false;
     public static boolean isInLevelThree = false;
 
+    public static boolean isInHiddenPart = false;
+
     public static boolean isInSectionOne = true;
     public static boolean isInSectionTwo = false;
-    public static boolean isInBossFight = true;
+    public static boolean isInBossFight = false;
 
     private final int FPS = 120;
     private final int UPS = 200;
@@ -40,9 +44,14 @@ public class Game implements Runnable {
     public Plant plant;
     public Checkpoint checkpoint;
     public Star star;
+
     public Enemy enemy;
     public Goompa goompa;
+    public Koopa koopa;
+    public Spiny spiny;
     public OgreMagi ogreMagi;
+    public NukeBird nukeBird;
+    public Bomb bomb;
 
     public int coins;
     public int lives = 3;
@@ -52,13 +61,19 @@ public class Game implements Runnable {
     public boolean isGameEnded;
     public boolean isCalculatedScoreInSectionOne;
     public boolean isCalculatedScoreInSectionTwo;
+
     GraphicalOgreMagi graphicalOgreMagi;
     GraphicalCoin graphicalCoin;
     GraphicalPlant graphicalPlant;
     GraphicalPipe graphicalPipe;
     GraphicalCheckpoint graphicalCheckpoint;
-    GraphicalEnemies graphicalEnemies;
+    GraphicalSpiny graphicalSpiny;
     GraphicalStar graphicalStar;
+    GraphicalGoompa graphicalGoompa;
+    GraphicalKoopa graphicalKoopa;
+    GraphicalNukeBird graphicalNukeBird;
+    GraphicalBomb graphicalBomb;
+
     ArrayList<JFrame> frames;
     Timer timer;
     int time = 100;
@@ -68,7 +83,6 @@ public class Game implements Runnable {
     private Player player;
     private LevelManager levelManager;
 
-//    LoadSave loadSave = new LoadSave(this);
 
     public Game() {
         // this should be the first thing in constructor
@@ -112,6 +126,7 @@ public class Game implements Runnable {
     private void initClasses() {
         player = new Player(50, 100, 50, 80);
         time = 100;
+        levelManager = new LevelManager(player);
 
 
         if (isInSectionOne && isInLevelOne) {
@@ -120,14 +135,26 @@ public class Game implements Runnable {
 
         else if (isInSectionTwo && isInLevelOne) {
             levelManager = new LevelManager(this, 1, 2);
+            System.out.println("1-2 if");
         }
 
         else if (isInSectionOne && isInLevelTwo) {
             levelManager = new LevelManager(this, 2, 1);
+            System.out.println("2-1 if");
         }
 
         else if (isInSectionTwo && isInLevelTwo) {
             levelManager = new LevelManager(this, 2, 2);
+            System.out.println("2-2 if");
+        }
+
+        else if (isInSectionOne && isInLevelThree) {
+            levelManager = new LevelManager(this, 3, 1);
+            System.out.println("3-1 if");
+        }
+
+        else if (isInSectionTwo && isInLevelThree) {
+            levelManager = new LevelManager(this, 3, 2);
         }
 
         else if (isInBossFight) {
@@ -138,6 +165,14 @@ public class Game implements Runnable {
         ogreMagi = new OgreMagi(levelManager);
         graphicalOgreMagi = new GraphicalOgreMagi(levelManager, ogreMagi);
 
+        spiny = new Spiny(levelManager);
+        graphicalSpiny = new GraphicalSpiny(levelManager, spiny);
+
+        koopa = new Koopa(levelManager);
+        graphicalKoopa = new GraphicalKoopa(levelManager, koopa);
+
+        goompa = new Goompa(levelManager);
+        graphicalGoompa = new GraphicalGoompa(levelManager, goompa);
 
         coin = new Coin(levelManager);
         graphicalCoin = new GraphicalCoin(levelManager, coin);
@@ -151,13 +186,14 @@ public class Game implements Runnable {
         checkpoint = new Checkpoint(levelManager);
         graphicalCheckpoint = new GraphicalCheckpoint(levelManager, checkpoint);
 
-        enemy = new Enemy(1200, 400, levelManager);
-        graphicalEnemies = new GraphicalEnemies(levelManager);
-
-        goompa = new Goompa(1600, 400, levelManager);
-
         star = new Star(640, 500, 48, 48, levelManager);
         graphicalStar = new GraphicalStar(levelManager);
+
+        bomb = new Bomb(levelManager);
+        graphicalBomb = new GraphicalBomb(levelManager, bomb);
+
+        nukeBird = new NukeBird(levelManager, bomb);
+        graphicalNukeBird = new GraphicalNukeBird(levelManager, nukeBird);
 
         tileManager = new TileManager(gamePanel);
 
@@ -169,8 +205,6 @@ public class Game implements Runnable {
 
         progressRate = (int) (player.x / 5120);
         progressRisk = coins * progressRate;
-
-//        goompa.move();
 
         // Death
         // in section one
@@ -230,13 +264,13 @@ public class Game implements Runnable {
     public void render(Graphics g) {
 
         // TEST PRINTS:
-        System.out.println("level: " + levelManager.levelNumber + " / section: " + levelManager.sectionNumber);
-        System.out.println("in level one: " + isInLevelOne + " / in level two: " + isInLevelTwo);
-        System.out.println("in section one: " + isInSectionOne + " / in section two: " + isInSectionTwo);
+//        System.out.println("level: " + levelManager.levelNumber + " / section: " + levelManager.sectionNumber);
+//        System.out.println("in level one: " + isInLevelOne + " / in level two: " + isInLevelTwo);
+//        System.out.println("in section one: " + isInSectionOne + " / in section two: " + isInSectionTwo);
 
         /* ----------------------------------------- MOVING TO NEXT PART -------------------------------------------- */
         // Level 1 ... Section 1 going to 2
-        if (player.hitBox.x >= 5000 && levelManager.levelNumber == 1 && levelManager.sectionNumber == 1) {
+        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION && levelManager.levelNumber == 1 && levelManager.sectionNumber == 1) {
             levelManager.sectionNumber = 2;
             isInSectionOne = false;
             isInSectionTwo = true;
@@ -244,16 +278,18 @@ public class Game implements Runnable {
         }
 
         // Level 1 ... Section 2 Ending
-        if (player.hitBox.x >= 5000 && levelManager.levelNumber == 1 && levelManager.sectionNumber == 2) {
+        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION && levelManager.levelNumber == 1 && levelManager.sectionNumber == 2) {
             levelManager.levelNumber = 2;
             levelManager.sectionNumber = 1;
             isInSectionOne = true;
             isInSectionTwo = false;
+            isInLevelOne = false;
+            isInLevelTwo = true;
             initClasses();
         }
 
         // Level 2 ... Section 1 going to 2
-        if (player.hitBox.x >= 4970 && levelManager.levelNumber == 2 && levelManager.sectionNumber == 1) {
+        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION && levelManager.levelNumber == 2 && levelManager.sectionNumber == 1) {
             System.out.println("az 2-1 raftam 2-2");
             levelManager.sectionNumber = 2;
             isInSectionOne = false;
@@ -261,12 +297,35 @@ public class Game implements Runnable {
             initClasses();
         }
 
-        // Level 2 ... Section 2 Ending ... Starting Boss Fights
-        if (player.hitBox.x >= 5000 && levelManager.levelNumber == 2 && levelManager.sectionNumber == 2) {
-            System.out.println("az 2-2 raftam boss");
+        // Level 2 ... Section 2 Ending
+        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION && levelManager.levelNumber == 2 && levelManager.sectionNumber == 2) {
+            System.out.println("az 2-2 raftam 3-1");
+            levelManager.levelNumber = 3;
+            levelManager.sectionNumber = 1;
+            isInSectionOne = true;
+            isInSectionTwo = false;
+            isInLevelTwo = false;
+            isInLevelThree = true;
+            initClasses();
+        }
+
+        // Level 3 ... Section 1 going to 2
+        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION && levelManager.levelNumber == 3 && levelManager.sectionNumber == 1) {
+            System.out.println("az 3-1 raftam 3-2");
+            levelManager.sectionNumber = 2;
+            isInSectionOne = false;
+            isInSectionTwo = true;
+            initClasses();
+        }
+
+        // Level 3 ... Section 2 Ending
+        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION && levelManager.levelNumber == 3 && levelManager.sectionNumber == 2) {
+            System.out.println("az 3-2 raftam boss");
             levelManager.levelNumber = 4;
             isInSectionOne = true;
             isInSectionTwo = false;
+            isInLevelThree = false;
+            isInBossFight = true;
             initClasses();
         }
         /* -------------------------------------------------------------------------------------------------------- */
@@ -305,9 +364,15 @@ public class Game implements Runnable {
 
 
                 graphicalCoin.draw(g, player.xLvlOffset);
-                graphicalCheckpoint.draw(g, player.xLvlOffset);
 
-                graphicalEnemies.draw(g, player.xLvlOffset);
+                graphicalSpiny.draw(g, player.xLvlOffset);
+                spiny.move();
+
+                graphicalGoompa.draw(g, player.xLvlOffset);
+                goompa.move();
+
+                graphicalKoopa.draw(g, player.xLvlOffset);
+                koopa.move();
 
                 if (!star.isUsed())
                     graphicalStar.draw(g, player.xLvlOffset);
@@ -373,6 +438,31 @@ public class Game implements Runnable {
         }
         /* -------------------------------------------------------------------------------------------------------- */
 
+        /* ---------------------------------------------- LEVEL 3 ------------------------------------------------- */
+        // LEVEL THREE DESIGNS
+        if (levelManager.levelNumber == 3) {
+            // SECTION ONE
+            if (levelManager.sectionNumber == 1) {
+                tileManager.draw(g, player.xLvlOffset);
+            }
+
+
+            // SECTION TWO
+            if (levelManager.sectionNumber == 2) {
+                tileManager.draw(g, player.xLvlOffset);
+                graphicalCoin.draw(g, player.xLvlOffset);
+            }
+        }
+        /* -------------------------------------------------------------------------------------------------------- */
+
+        graphicalCheckpoint.draw(g, player.xLvlOffset);
+
+        graphicalNukeBird.draw(g, player.xLvlOffset);
+        nukeBird.move();
+
+        graphicalBomb.draw(g, player.xLvlOffset);
+        bomb.move();
+
         /* ------------------------------------------------- BOSS_FIGHT --------------------------------------------- */
         // LEVEL 4 (BOSS FIGHT) DESIGNS
         if (levelManager.levelNumber == 4) {
@@ -386,7 +476,7 @@ public class Game implements Runnable {
         // TIME MECHANISM
         g.setColor(Color.black);
         g.setFont(new Font("Courier", Font.BOLD, 40));
-        g.drawString("Time: " + time, 740, 40);
+        g.drawString("Time: " + time, 745, 40);
 
         if (time == -1) {
             lives--;
@@ -426,9 +516,30 @@ public class Game implements Runnable {
             isInLevelOne = false;
             isInLevelTwo = true;
         }
+
+        /* -------------------------------------------------------------------------------------------------------- */
+        g.setColor(Color.black);
+        g.setFont(new Font("Consolas", Font.BOLD, 60));
+        g.drawString("Ghoole Marhale Akhar :D", 4300 - player.xLvlOffset, 350);
+
+        g.setColor(Color.black);
+        g.setFont(new Font("Courier", Font.BOLD, 36));
+        g.drawString("Lives: " + lives, 20, 40);
+
+        g.setColor(Color.black);
+        g.setFont(new Font("Courier", Font.BOLD, 36));
+        g.drawString("Coins: " + coins, 250, 40);
+
+        g.setColor(Color.black);
+        g.setFont(new Font("Courier", Font.BOLD, 36));
+        g.drawString("Score: " + score, 490, 40);
+
+        g.setColor(Color.black);
+        g.setFont(new Font("Courier", Font.BOLD, 36));
+        g.drawString("World: " + levelManager.levelNumber + " - " + levelManager.sectionNumber, 1000, 40);
         /* -------------------------------------------------------------------------------------------------------- */
 
-        pipe.draw(g, player.xLvlOffset);
+        graphicalPipe.draw(g, player.xLvlOffset);
         player.render(g, player.xLvlOffset);
     }
 

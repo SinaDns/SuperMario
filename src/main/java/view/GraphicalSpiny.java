@@ -3,35 +3,34 @@ package view;
 import config.ImageAddresses;
 import controller.LevelManager;
 import model.Goompa;
+import model.Spiny;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class GraphicalEnemies implements Drawable {
+public class GraphicalSpiny implements Drawable {
 
     LevelManager levelManager;
-    Goompa goompa;
 
-
+    Spiny spiny;
     BufferedImage spinyImage;
 
-    int xGoompa = 1600;
-    int yGoompa = 400;
+//    Goompa goompa;
+//    int xGoompa = 1600;
+//    int yGoompa = 400;
+//        goompa = new Goompa(xGoompa, yGoompa, levelManager);
 
 
-    public GraphicalEnemies(LevelManager levelManager) {
+    public GraphicalSpiny(LevelManager levelManager, Spiny spiny) {
         this.levelManager = levelManager;
-        goompa = new Goompa(xGoompa, yGoompa, levelManager);
+        this.spiny = spiny;
         spinyImage = ImageAddresses.getSprite(ImageAddresses.SPINY);
     }
 
 
     @Override
     public void draw(Graphics g, int xLvlOffset) {
-
-
-        g.drawImage(spinyImage, 1400 - xLvlOffset, 330, 50, 50, null);
-
+        g.drawImage(spinyImage, spiny.x - xLvlOffset, spiny.y, 50, 50, null);
     }
 
 

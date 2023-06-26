@@ -4,6 +4,7 @@ package controller;
 
 import config.ImageAddresses;
 import model.Game;
+import model.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,6 +14,7 @@ public class LevelManager {
     public int levelNumber;
     public int sectionNumber;
 
+    public Player player;
     private Game game;
     //    @JsonIgnore
     private BufferedImage section1Sprite;
@@ -28,6 +30,10 @@ public class LevelManager {
         section2Sprite = ImageAddresses.getSprite(ImageAddresses.section2);
     }
 
+    public LevelManager(Player player) {
+        this.player = player;
+    }
+
     public LevelManager() {
 
     }
@@ -35,18 +41,16 @@ public class LevelManager {
 
     public void draw(Graphics g, int xLvlOffset, int lives, int coins, int score) {
 
-//        System.out.println("Level: " + levelNumber + " | Section: " + sectionNumber);
-
         switch (levelNumber) {
 
             case 1:
                 switch (sectionNumber) {
                     case 1 -> {
                         g.drawArc(0, 0, 0, 0, 0, 0);
-                        g.drawImage(section1Sprite, -xLvlOffset, 0, 5120, 720, null);
+                        g.drawImage(section1Sprite, -xLvlOffset, 0, 6400, 720, null);
                     }
                     case 2 -> {
-                        g.drawImage(section2Sprite, -xLvlOffset, 0, 5120, 720, null);
+                        g.drawImage(section2Sprite, -xLvlOffset, 0, 6400, 720, null);
                         // DRAWING TILES (COMPLICATED ONE)
                         g.drawImage(TileManager.tiles[0].image, 631 - xLvlOffset, 311, 48, 48, null);
                         g.drawImage(TileManager.tiles[0].image, 681 - xLvlOffset, 311, 48, 48, null);
@@ -60,10 +64,10 @@ public class LevelManager {
             case 2:
                 switch (sectionNumber) {
                     case 1 -> {
-                        g.drawImage(section1Sprite, -xLvlOffset, 0, 5120, 720, null);
+                        g.drawImage(section1Sprite, -xLvlOffset, 0, 6400, 720, null);
                     }
                     case 2 -> {
-                        g.drawImage(section2Sprite, -xLvlOffset, 0, 5120, 720, null);
+                        g.drawImage(section2Sprite, -xLvlOffset, 0, 6400, 720, null);
 
                         // DRAWING TILES (COMPLICATED ONE)
                         g.drawImage(TileManager.tiles[0].image, 631 - xLvlOffset, 311, 48, 48, null);
@@ -71,6 +75,21 @@ public class LevelManager {
                         g.drawImage(TileManager.tiles[0].image, 731 - xLvlOffset, 311, 48, 48, null);
                         g.drawImage(TileManager.tiles[0].image, 781 - xLvlOffset, 311, 48, 48, null);
                         g.drawImage(TileManager.tiles[0].image, 831 - xLvlOffset, 311, 48, 48, null);
+                    }
+                }
+                break;
+
+            case 3:
+                g.setColor(new Color(29, 81, 58));
+                g.fillRect(0, 0, 6400, 720);
+                switch (sectionNumber) {
+                    case 1 -> {
+//                        g.setColor(new Color(29, 81, 58));
+//                        g.fillRect(0, 0, 6400, 720);
+                    }
+                    case 2 -> {
+                        g.setColor(new Color(4, 50, 30));
+                        g.fillRect(0, 0, 6400, 720);
                     }
                 }
                 break;
@@ -93,38 +112,8 @@ public class LevelManager {
                     g.drawImage(TileManager.tiles[2].image, 48 * (i) - xLvlOffset, 528 + 48 + 48 + 48, 48, 48, null);
                     g.drawImage(TileManager.tiles[2].image, 48 * (i) - xLvlOffset, 528 + 48 + 48 + 48 + 48, 48, 48, null);
                 }
-
                 break;
         }
-
-
-        g.setColor(Color.black);
-        g.setFont(new Font("Consolas", Font.BOLD, 60));
-        g.drawString("Ghoole Marhale Akhar :D", 4300 - xLvlOffset, 350);
-
-        g.setColor(Color.black);
-        g.setFont(new Font("Courier", Font.BOLD, 40));
-        g.drawString("Lives: " + lives, 20, 40);
-
-        g.setColor(Color.black);
-        g.setFont(new Font("Courier", Font.BOLD, 40));
-        g.drawString("Coins: " + coins, 250, 40);
-
-        g.setColor(Color.black);
-        g.setFont(new Font("Courier", Font.BOLD, 40));
-        g.drawString("Score: " + score, 500, 40);
-
-        g.setColor(Color.black);
-        g.setFont(new Font("Courier", Font.BOLD, 40));
-        if ((-xLvlOffset <= 0) && (-xLvlOffset >= -1280))
-            g.drawString("World: " + sectionNumber + " - 1", 1000, 40);
-        else if ((-xLvlOffset <= -1280) && (-xLvlOffset >= -2560))
-            g.drawString("World: " + sectionNumber + " - 2", 1000, 40);
-        else if ((-xLvlOffset <= -2560) && (-xLvlOffset >= -3840))
-            g.drawString("World: " + sectionNumber + " - 3", 1000, 40);
-        else if ((-xLvlOffset <= 0))
-            g.drawString("World: " + sectionNumber + " - 4", 1000, 40);
-
     }
 
     public Game getGame() {

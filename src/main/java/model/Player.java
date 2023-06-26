@@ -14,6 +14,8 @@ public class Player extends Entity {
 
     public boolean isOnSlimeBlock = false;
     public boolean isOnMiniMode = false;
+    public boolean isOnMegaMode = false;
+    public boolean isOnIcyMode = false;
     public int marioSelectionNumber = 4;
     public int xLvlOffset;
     public boolean activeShield = false;
@@ -26,7 +28,7 @@ public class Player extends Entity {
     private int leftBorder = (int) (0.5 * Game.GAME_WIDTH);
     private int rightBorder = (int) (0.5 * Game.GAME_WIDTH);
     // pixels that we wouldn't see
-    private int maxOffsetX = 3840;
+    private int maxOffsetX = (5 * Game.GAME_WIDTH) - Game.GAME_WIDTH;
     private float xDrawOffset = 21 * Game.SCALE;
     private float yDrawOffset = 4 * Game.SCALE;
 
@@ -44,9 +46,7 @@ public class Player extends Entity {
         initHitBox(x, y, 20 * Game.SCALE, 27 * Game.SCALE);
     }
 
-    public Player() {
-
-    }
+    public Player() {}
 
     public void update() {
         updatePosition();
@@ -179,6 +179,7 @@ public class Player extends Entity {
         BufferedImage imageGreen = ImageAddresses.getSprite(ImageAddresses.GREEN_MARIO);
         BufferedImage imageYellow = ImageAddresses.getSprite(ImageAddresses.YELLOW_MARIO);
         BufferedImage imageBlack = ImageAddresses.getSprite(ImageAddresses.BLACK_MARIO);
+        BufferedImage imageIcy = ImageAddresses.getSprite(ImageAddresses.ICY_MARIO);
 
         afkAni = new BufferedImage[2];
 
@@ -206,6 +207,13 @@ public class Player extends Entity {
             for (int i = 0; i < afkAni.length; i++) {
                 afkAni[i] = imageBlack.getSubimage(i * 200, 0, 200, 280);
             }
+
+        if (isOnIcyMode)
+            for (int i = 0; i < afkAni.length; i++) {
+                afkAni[i] = imageIcy.getSubimage(i * 200, 0, 200, 280);
+            }
+
+
     }
 
     public float GetEntityXPosNextToWall(Rectangle hitBox, float xSpeed) {
@@ -235,8 +243,10 @@ public class Player extends Entity {
 
     public boolean isSolid(float x, float y) {
 
-        if (x < 0 || x >= 4 * Game.GAME_WIDTH)
+        if (x < 0 || x >= 5 * Game.GAME_WIDTH)
             return false;
+
+        // Gravity Checker
         if (y < 0 || y >= 480)
             return false;
 

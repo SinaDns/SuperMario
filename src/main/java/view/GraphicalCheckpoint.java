@@ -22,7 +22,7 @@ public class GraphicalCheckpoint implements Drawable {
 
     @Override
     public void draw(Graphics g, int xLvlOffset) {
-        g.drawImage(checkPointImage,  1000 - xLvlOffset, 300, checkpoint.width, checkpoint.height, null);
+        g.drawImage(checkPointImage, 5760 - xLvlOffset, 388, checkpoint.width, checkpoint.height, null);
     }
 
 
