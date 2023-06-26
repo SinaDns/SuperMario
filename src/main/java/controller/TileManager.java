@@ -11,6 +11,7 @@ import java.awt.*;
 public class TileManager implements Drawable {
 
 
+    public LevelManager levelManager;
     public static Tile[] tiles;
     GamePanel gamePanel;
 
@@ -19,6 +20,10 @@ public class TileManager implements Drawable {
         tiles = new Tile[6];
 
         getTileImage();
+    }
+
+    public TileManager(LevelManager levelManager) {
+        this.levelManager = levelManager;
     }
 
 
@@ -72,5 +77,19 @@ public class TileManager implements Drawable {
 
         if (Game.isInLevelOne && Game.isInSectionTwo)
             g.drawImage(tiles[4].image, 1000 - xLvlOffset, 430, 48, 48, null);
+
+
+
+        if (Game.isInFirstHiddenPart) {
+            for (int i = 0; i < 39; i++) {
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48 + 48, 48, 48, null);
+            }
+        }
+
+
     }
 }

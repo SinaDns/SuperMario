@@ -10,7 +10,6 @@ public abstract class Entity {
 
     public float x, y;
     public int width, height;
-    public LevelManager levelManager;
     @JsonIgnore
     public Rectangle hitBox;
     public Coin coin;

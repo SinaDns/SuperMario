@@ -46,7 +46,8 @@ public class Player extends Entity {
         initHitBox(x, y, 20 * Game.SCALE, 27 * Game.SCALE);
     }
 
-    public Player() {}
+    public Player() {
+    }
 
     public void update() {
         updatePosition();
@@ -77,11 +78,9 @@ public class Player extends Entity {
                 g.setColor(Color.PINK);
                 g.fillOval((int) (hitBox.x - xDrawOffset) - xLvlOffset - 25, (int) (hitBox.y - yDrawOffset), 65, 65);
                 g.drawImage(afkAni[aniIndex], (int) (hitBox.x - xDrawOffset) - xLvlOffset, (int) (hitBox.y - yDrawOffset), 50, 40, null);
-            }
-            else
+            } else
                 g.drawImage(afkAni[aniIndex], (int) (hitBox.x - xDrawOffset) - xLvlOffset, (int) (hitBox.y - yDrawOffset), 50, 40, null);
-        }
-        else {
+        } else {
             if (activeShield) {
                 g.setColor(Color.PINK);
                 g.fillOval((int) (hitBox.x - xDrawOffset) - xLvlOffset - 20, (int) (hitBox.y - yDrawOffset), 85, 85);
@@ -246,11 +245,11 @@ public class Player extends Entity {
         if (x < 0 || x >= 5 * Game.GAME_WIDTH)
             return false;
 
-        // Gravity Checker
+        // Gravity Checker for Mario
         if (y < 0 || y >= 480)
             return false;
 
-        if (Game.isInBossFight && (x > Game.GAME_WIDTH) )
+        if (Game.isInBossFight && (x > Game.GAME_WIDTH))
             return false;
 
         if (Game.isInLevelOne && Game.isInSectionOne) {
@@ -273,12 +272,19 @@ public class Player extends Entity {
             if ((x >= 660 && x <= 890) && (y >= 308 && y <= 385))
                 return false;
             // pipe
-            if ((x <= 3120 && x >= 3010) && (y <= 500 && y >= 360))
+            if ((x <= 3120 && x >= 3020) && (y <= 500 && y >= 360))
                 return false;
+
+            // hidden pipe
+            if ((4120 <= x && x <= 4220) && (370 <= y)) {
+//                Game.isInFirstHiddenPart = true;
+                return false;
+            }
         }
 
         if (Game.isInLevelOne && Game.isInSectionOne && (x > 1102 || x < 1000))
             isOnSlimeBlock = false;
+
 
         return true;
     }

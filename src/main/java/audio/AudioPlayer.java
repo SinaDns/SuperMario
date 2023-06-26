@@ -59,7 +59,6 @@ public class AudioPlayer {
         AudioInputStream audioInputStream;
 
         try {
-            assert url != null;
             audioInputStream = AudioSystem.getAudioInputStream(url);
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);

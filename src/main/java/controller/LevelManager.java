@@ -113,6 +113,12 @@ public class LevelManager {
                     g.drawImage(TileManager.tiles[2].image, 48 * (i) - xLvlOffset, 528 + 48 + 48 + 48 + 48, 48, 48, null);
                 }
                 break;
+
+
+            case 5:
+                g.setColor(new Color(113, 68, 68));
+                g.fillRect(0, 0, 1280, 720);
+                break;
         }
     }
 

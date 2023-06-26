@@ -24,13 +24,13 @@ public class Game implements Runnable {
     public final static int GAME_WIDTH = 1280;
     public final static int GAME_HEIGHT = 720;
 
-    public final int BOUND_TO_NEXT_SECTION = 6300;
+    public final int BOUND_TO_NEXT_SECTION = (5 * GAME_WIDTH) - 100;
 
     public static boolean isInLevelOne = true;
     public static boolean isInLevelTwo = false;
     public static boolean isInLevelThree = false;
 
-    public static boolean isInHiddenPart = false;
+    public static boolean isInFirstHiddenPart = false;
 
     public static boolean isInSectionOne = true;
     public static boolean isInSectionTwo = false;
@@ -187,7 +187,7 @@ public class Game implements Runnable {
         graphicalCheckpoint = new GraphicalCheckpoint(levelManager, checkpoint);
 
         star = new Star(640, 500, 48, 48, levelManager);
-        graphicalStar = new GraphicalStar(levelManager);
+        graphicalStar = new GraphicalStar(levelManager, star);
 
         bomb = new Bomb(levelManager);
         graphicalBomb = new GraphicalBomb(levelManager, bomb);
@@ -195,6 +195,8 @@ public class Game implements Runnable {
         nukeBird = new NukeBird(levelManager, bomb);
         graphicalNukeBird = new GraphicalNukeBird(levelManager, nukeBird);
 
+
+        // TODO
         tileManager = new TileManager(gamePanel);
 
         if (isInSectionTwo)
@@ -328,7 +330,16 @@ public class Game implements Runnable {
             isInBossFight = true;
             initClasses();
         }
-        /* -------------------------------------------------------------------------------------------------------- */
+
+        if (levelManager.levelNumber == 5) {
+            System.out.println("az 1-2 raftam hidden");
+            isInSectionOne = false;
+            isInSectionTwo = false;
+            isInLevelOne = false;
+            initClasses();
+        }
+
+        /* ------------------------------------------------------------------------------------------------------- */
 
         /* ------------------------------------------------- LEVEL 1 --------------------------------------------- */
         // LEVEL ONE DESIGNS
@@ -359,8 +370,6 @@ public class Game implements Runnable {
                 if ((player.hitBox.x <= 2535 && player.hitBox.x >= 2500)
                         && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
                     coin.drawingCoinsAtSectionOne[6] = true;
-
-
 
 
                 graphicalCoin.draw(g, player.xLvlOffset);
@@ -472,6 +481,24 @@ public class Game implements Runnable {
         }
         /* ---------------------------------------------------------------------------------------------------------- */
 
+        /* ------------------------------------------------ Hidden Parts -------------------------------------------- */
+
+        // LEVEL 1
+        if (Game.isInFirstHiddenPart)
+            levelManager.levelNumber = 5;
+
+        if (levelManager.levelNumber == 5) {
+            levelManager.draw(g, player.xLvlOffset, lives, coins, score);
+        }
+
+
+
+
+
+        /* ---------------------------------------------------------------------------------------------------------- */
+
+
+
         /* ------------------------------------------------- TIME ------------------------------------------------ */
         // TIME MECHANISM
         g.setColor(Color.black);
@@ -517,7 +544,7 @@ public class Game implements Runnable {
             isInLevelTwo = true;
         }
 
-        /* -------------------------------------------------------------------------------------------------------- */
+        /* ---------------------------------------------- HUI ------------------------------------------------------- */
         g.setColor(Color.black);
         g.setFont(new Font("Consolas", Font.BOLD, 60));
         g.drawString("Ghoole Marhale Akhar :D", 4300 - player.xLvlOffset, 350);

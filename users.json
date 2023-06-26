@@ -1,8 +1,8 @@
 [ {
   "username" : "anis",
   "password" : "1383",
-  "allScores" : [ 193 ],
-  "userCoins" : [ 4 ],
+  "allScores" : [ 0 ],
+  "userCoins" : [ 0 ],
   "redBought" : true,
   "pinkBought" : false,
   "greenBought" : false,
