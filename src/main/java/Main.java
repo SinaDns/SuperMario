@@ -1,7 +1,6 @@
-import model.IO;
+import controller.IO;
 import model.User;
-import view.FirstFrame;
-import view.GameSlotFrame;
+import view.frames.GameSlotFrame;
 
 public class Main {
 

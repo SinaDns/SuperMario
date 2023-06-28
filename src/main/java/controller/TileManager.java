@@ -4,15 +4,15 @@ import config.ImageAddresses;
 import model.Game;
 import model.Tile;
 import view.Drawable;
-import view.GamePanel;
+import view.panels.GamePanel;
 
 import java.awt.*;
 
 public class TileManager implements Drawable {
 
 
-    public LevelManager levelManager;
     public static Tile[] tiles;
+    public LevelManager levelManager;
     GamePanel gamePanel;
 
     public TileManager(GamePanel gamePanel) {
@@ -50,7 +50,8 @@ public class TileManager implements Drawable {
     @Override
     public void draw(Graphics g, int xLvlOffset) {
 
-        for (int i = 0; i < 39; i++) {
+
+        for (int i = 0; i < 134; i++) {
             g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500, 48, 48, null);
             g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48, 48, 48, null);
             g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48, 48, 48, null);
@@ -58,7 +59,66 @@ public class TileManager implements Drawable {
             g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48 + 48, 48, 48, null);
         }
 
+        /* ------------------------------------- Drawing All Level 1 Tiles ------------------------------------------ */
+        if (Game.isInLevelOne && Game.isInSectionOne) {
+            for (int i = 0; i < 39; i++) {
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48 + 48, 48, 48, null);
+            }
 
+            for (int i = 0; i < 100; i++) {
+                g.drawImage(tiles[2].image, 2040 + 48 * (i) - xLvlOffset, 500, 48, 48, null);
+                g.drawImage(tiles[2].image, 2040 + 48 * (i) - xLvlOffset, 500 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 2040 + 48 * (i) - xLvlOffset, 500 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 2040 + 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 2040 + 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48 + 48, 48, 48, null);
+            }
+
+
+            // SLIME TILE
+            g.drawImage(tiles[4].image, 1000 - xLvlOffset, 430, 48, 48, null);
+        }
+
+        if (Game.isInLevelOne && Game.isInSectionTwo) {
+            for (int i = 0; i < 70; i++) {
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48 + 48, 48, 48, null);
+            }
+
+            // SLIME TILE
+            g.drawImage(tiles[4].image, 1000 - xLvlOffset, 430, 48, 48, null);
+        }
+        /* ---------------------------------------------------------------------------------------------------------- */
+
+        /* ------------------------------------- Drawing All Level 2 Tiles ------------------------------------------ */
+
+        if (Game.isInLevelTwo && Game.isInSectionOne) {
+            for (int i = 0; i < 50; i++) {
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48 + 48, 48, 48, null);
+            }
+        }
+
+        if (Game.isInLevelTwo && Game.isInSectionTwo) {
+            for (int i = 0; i < 150; i++) {
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48, 48, 48, null);
+                g.drawImage(tiles[2].image, 48 * (i) - xLvlOffset, 500 + 48 + 48 + 48 + 48, 48, 48, null);
+            }
+        }
+
+        /* ---------------------------------------------------------------------------------------------------------- */
         for (int i = 0; i < 5; i++)
             g.drawImage(tiles[1].image, 2000 + (48 * i) - xLvlOffset, 350, 48, 48, null);
 
@@ -70,15 +130,6 @@ public class TileManager implements Drawable {
 //                g.drawImage(tiles[1].image, (48 * i) - xLvlOffset, 0, 48, 48, null);
 //            }
 //        }
-
-        // Drawing Slime Block
-        if (Game.isInLevelOne && Game.isInSectionOne)
-            g.drawImage(tiles[4].image, 1000 - xLvlOffset, 430, 48, 48, null);
-
-        if (Game.isInLevelOne && Game.isInSectionTwo)
-            g.drawImage(tiles[4].image, 1000 - xLvlOffset, 430, 48, 48, null);
-
-
 
         if (Game.isInFirstHiddenPart) {
             for (int i = 0; i < 39; i++) {

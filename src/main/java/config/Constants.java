@@ -2,8 +2,22 @@ package config;
 
 public class Constants {
 
-    public static final int MENUS_WIDTH = 1000;
-    public static final int MENUS_HEIGHT = 900;
+    public static final int MENU_WIDTH = 1000;
+    public static final int MENU_HEIGHT = 900;
+
+    public final static int GAME_WIDTH = 1280;
+    public final static int GAME_HEIGHT = 720;
+
+//    public final int BOUND_TO_NEXT_SECTION = (5 * GAME_WIDTH) - 100;
+
+    public static final int FPS = 120;
+    public static final int UPS = 200;
+
+    public final static float SCALE = 1.5f;
+    public final static int TILES_DEFAULT_SIZE = 32;
+    public final static int TILES_IN_WIDTH = 26;
+    public final static int TILES_IN_HEIGHT = 14;
+    public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
 
 
     public static class Directions {
@@ -29,22 +43,13 @@ public class Constants {
         // how many sprites, are in the action? (for not going out of bounds)
         public static int getSpriteAmounts(int playerAction) {
 
-            switch (playerAction) {
-                case RUNNING:
-                    return 2;
-
-                case JUMPING:
-                case HIT:
-                case FALLING:
-                case GROUND:
-                    return 1;
-
-                default:
-                    return 1;
-            }
+            return switch (playerAction) {
+                case RUNNING -> 2;
+                case JUMPING, HIT, FALLING, GROUND -> 1;
+                default -> 1;
+            };
         }
     }
-
 
 
 }

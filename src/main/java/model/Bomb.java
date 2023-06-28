@@ -1,6 +1,7 @@
 package model;
 
 import controller.LevelManager;
+import model.interfaces.Moveable;
 
 public class Bomb implements Moveable {
 

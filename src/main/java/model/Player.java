@@ -2,9 +2,13 @@ package model;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import config.Constants;
 import config.ImageAddresses;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import static config.Constants.PlayerConstants.IDLE;
@@ -12,6 +16,8 @@ import static config.Constants.PlayerConstants.RUNNING;
 
 public class Player extends Entity {
 
+
+    public boolean weapon = false;
     public boolean isOnSlimeBlock = false;
     public boolean isOnMiniMode = false;
     public boolean isOnMegaMode = false;
@@ -19,31 +25,31 @@ public class Player extends Entity {
     public int marioSelectionNumber = 4;
     public int xLvlOffset;
     public boolean activeShield = false;
+    Timer timer;
     //    @JsonIgnore
     private BufferedImage[] afkAni;
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
     private boolean moving;
     private boolean left, right, jump;
-    private int leftBorder = (int) (0.5 * Game.GAME_WIDTH);
-    private int rightBorder = (int) (0.5 * Game.GAME_WIDTH);
+    private boolean fire;
+    private int leftBorder = (int) (0.5 * Constants.GAME_WIDTH);
+    private int rightBorder = (int) (0.5 * Constants.GAME_WIDTH);
     // pixels that we wouldn't see
-    private int maxOffsetX = (5 * Game.GAME_WIDTH) - Game.GAME_WIDTH;
-    private float xDrawOffset = 21 * Game.SCALE;
-    private float yDrawOffset = 4 * Game.SCALE;
-
+    private int maxOffsetX = (5 * Constants.GAME_WIDTH) - Constants.GAME_WIDTH;
+    private float xDrawOffset = 21 * Constants.SCALE;
+    private float yDrawOffset = 4 * Constants.SCALE;
     // Jumping + Gravity
     private float airSpeed = 0f;
-    private float gravity = 0.04f * Game.SCALE;
-    private float jumpSpeed = -3f * Game.SCALE;
-    private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
+    private float gravity = 0.04f * Constants.SCALE;
+    private float jumpSpeed = -3f * Constants.SCALE;
+    private float fallSpeedAfterCollision = 0.5f * Constants.SCALE;
     private boolean inAir = false;
-
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
-        initHitBox(x, y, 20 * Game.SCALE, 27 * Game.SCALE);
+        initHitBox(x, y, 20 * Constants.SCALE, 27 * Constants.SCALE);
     }
 
     public Player() {
@@ -52,7 +58,10 @@ public class Player extends Entity {
     public void update() {
         updatePosition();
         updateAnimationTick();
-        checkCloseToBorder();
+
+        if (!Game.isInBossFight)
+            checkCloseToBorder();
+
         setAnimation();
     }
 
@@ -111,39 +120,58 @@ public class Player extends Entity {
     private void updatePosition() {
         moving = false;
 
-        if (jump)
-            jump();
-        if (!left && !right && !inAir)
-            return;
 
-        float xSpeed = 0;
-        float playerSpeed = 5;
-        if (left)
-            xSpeed -= playerSpeed;
-        if (right)
-            xSpeed += playerSpeed;
+        // Mario Weapon
+        if (isOnMiniMode && jump) {
+            System.out.println("tooye in if");
+            timer = new Timer(2000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("kar kard.");
+                    weapon = true;
+                }
+            });
+            timer.start();
+            timer.setRepeats(false);
+        }
+        else {
+            if (jump)
+                jump();
 
-        if (!inAir)
-            if (!IsEntityOnFloor(hitBox))
-                inAir = true;
+            if (!left && !right && !inAir)
+                return;
 
-        if (inAir) {
-            if (canMoveHere(hitBox.x, hitBox.y + airSpeed, hitBox.width, hitBox.height)) {
-                hitBox.y += airSpeed;
-                airSpeed += gravity;
+            float xSpeed = 0;
+            float playerSpeed = 5;
+            if (left)
+                xSpeed -= playerSpeed;
+            if (right)
+                xSpeed += playerSpeed;
+
+            if (!inAir)
+                if (!IsEntityOnFloor(hitBox))
+                    inAir = true;
+
+            if (inAir) {
+                if (canMoveHere(hitBox.x, hitBox.y + airSpeed, hitBox.width, hitBox.height)) {
+                    hitBox.y += airSpeed;
+                    airSpeed += gravity;
+                    updateXPos(xSpeed);
+                } else {
+                    hitBox.y = (int) GetEntityYPosUnderRoofOrAboveFloor(hitBox, airSpeed);
+                    if (airSpeed > 0)
+                        resetInAir();
+                    else
+                        airSpeed = fallSpeedAfterCollision;
+                    updateXPos(xSpeed);
+                }
+            } else
                 updateXPos(xSpeed);
-            } else {
-                hitBox.y = (int) GetEntityYPosUnderRoofOrAboveFloor(hitBox, airSpeed);
-                if (airSpeed > 0)
-                    resetInAir();
-                else
-                    airSpeed = fallSpeedAfterCollision;
-                updateXPos(xSpeed);
-            }
-        } else
-            updateXPos(xSpeed);
 
-        moving = true;
+            moving = true;
+        }
+
+
     }
 
     private void jump() {
@@ -217,15 +245,15 @@ public class Player extends Entity {
 
     public float GetEntityXPosNextToWall(Rectangle hitBox, float xSpeed) {
 
-        int currentTile = (hitBox.x / Game.TILES_SIZE);
+        int currentTile = (hitBox.x / Constants.TILES_SIZE);
         if (xSpeed > 0) {
             // Right
-            int tileXPos = currentTile * Game.TILES_SIZE;
-            int xOffset = (Game.TILES_SIZE - hitBox.width);
+            int tileXPos = currentTile * Constants.TILES_SIZE;
+            int xOffset = (Constants.TILES_SIZE - hitBox.width);
             return tileXPos + xOffset - 1;
         } else
             // Left
-            return currentTile * Game.TILES_SIZE;
+            return currentTile * Constants.TILES_SIZE;
     }
 
 
@@ -242,15 +270,18 @@ public class Player extends Entity {
 
     public boolean isSolid(float x, float y) {
 
-        if (x < 0 || x >= 5 * Game.GAME_WIDTH)
+        if (x < 0 || x >= 5 * Constants.GAME_WIDTH)
             return false;
 
         // Gravity Checker for Mario
         if (y < 0 || y >= 480)
             return false;
 
-        if (Game.isInBossFight && (x > Game.GAME_WIDTH))
+
+        if (Game.isInBossFight && (x > Constants.GAME_WIDTH))
             return false;
+
+        // ---------------------------------------------- LEVEL 1 --------------------------------------------------- //
 
         if (Game.isInLevelOne && Game.isInSectionOne) {
             // tiles in section 1
@@ -282,6 +313,8 @@ public class Player extends Entity {
             }
         }
 
+        // ---------------------------------------------------------------------------------------------------------- //
+
         if (Game.isInLevelOne && Game.isInSectionOne && (x > 1102 || x < 1000))
             isOnSlimeBlock = false;
 
@@ -290,15 +323,15 @@ public class Player extends Entity {
     }
 
     public float GetEntityYPosUnderRoofOrAboveFloor(Rectangle hitbox, float airSpeed) {
-        int currentTile = (hitbox.y / Game.TILES_SIZE);
+        int currentTile = (hitbox.y / Constants.TILES_SIZE);
         if (airSpeed > 0) {
             // Falling - touching floor - hole?!
-            int tileYPos = currentTile * Game.TILES_SIZE;
-            int yOffset = (Game.TILES_SIZE - hitbox.height);
+            int tileYPos = currentTile * Constants.TILES_SIZE;
+            int yOffset = (Constants.TILES_SIZE - hitbox.height);
             return tileYPos + yOffset - 1;
         } else
             // Jumping
-            return currentTile * Game.TILES_SIZE;
+            return currentTile * Constants.TILES_SIZE;
     }
 
 
@@ -321,6 +354,13 @@ public class Player extends Entity {
         return true;
     }
 
+    public boolean isFire() {
+        return fire;
+    }
+
+    public void setFire(boolean fire) {
+        this.fire = fire;
+    }
 
     public BufferedImage[] getAfkAni() {
         return afkAni;

@@ -12,16 +12,13 @@ public class ImageAddresses {
 
     // Items
     public static final String COIN = "spr_coin_0.png";
+    public static final String MUSHROOM = "Mushroom.png";
     public static final String PIPE = "pipe.png";
     public static final String FLOWER = "flower.png";
     public static final String PASHA = "PashaHead.png";
     public static final String STAR = "Star.png";
     public static final String HEALTH_BAR = "health-bar.png";
     public static final String HEALTH_BAR_2 = "HealthBar.png";
-    // *******
-
-    public static final String section1 = "IMG_1871.JPG";
-    public static final String section2 = "Level1-Section2.jpg";
 
     public static final String RED_MARIO = "RedMario.png";
     public static final String BLACK_MARIO = "BlackMario.png";
@@ -37,9 +34,11 @@ public class ImageAddresses {
     public static final String STORE_PINK = "StorePink.png";
 
     public static final String CHECKPOINT_FLAG = "Checkpoint-Flag.png";
+    public static final String SWORD = "PipeSword.png";
 
     // Boss
     public static final String BOSS = "ogre_magi.png";
+    public static final String INVERTED_BOSS = "ogre_magi_inverted.png";
     public static final String TRIGGERED_BOSS = "ogre_magi_arcana.png";
 
     // Enemies

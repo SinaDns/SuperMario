@@ -1,8 +1,7 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import controller.LevelManager;
-import model.Coin;
+import model.items.Coin;
 
 import java.awt.*;
 

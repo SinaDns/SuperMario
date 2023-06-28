@@ -107,7 +107,7 @@ public class User {
                 System.out.println("Ba Movafaghiyat Login shodid!");
                 success = true;
                 loggedInUser.set(0, user);
-                // model.IO.getInstance().loadGame();
+                // controller.IO.getInstance().loadGame();
                 System.out.println(loggedInUser.get(0).username);
             } else System.out.println("Password Eshtebah Ast. Dobare talash konid");
         }

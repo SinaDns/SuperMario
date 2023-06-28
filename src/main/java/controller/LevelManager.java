@@ -2,6 +2,7 @@ package controller;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import config.Constants;
 import config.ImageAddresses;
 import model.Game;
 import model.Player;
@@ -16,18 +17,13 @@ public class LevelManager {
 
     public Player player;
     private Game game;
-    //    @JsonIgnore
-    private BufferedImage section1Sprite;
-    //    @JsonIgnore
-    private BufferedImage section2Sprite;
+
 
 
     public LevelManager(Game game, int levelNumber, int sectionNumber) {
         this.game = game;
         this.sectionNumber = sectionNumber;
         this.levelNumber = levelNumber;
-        section1Sprite = ImageAddresses.getSprite(ImageAddresses.section1);
-        section2Sprite = ImageAddresses.getSprite(ImageAddresses.section2);
     }
 
     public LevelManager(Player player) {
@@ -44,14 +40,15 @@ public class LevelManager {
         switch (levelNumber) {
 
             case 1:
+                g.setColor(new Color(75, 145, 233, 255));
+                g.fillRect(0, 0, 5* Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
                 switch (sectionNumber) {
                     case 1 -> {
-                        g.drawArc(0, 0, 0, 0, 0, 0);
-                        g.drawImage(section1Sprite, -xLvlOffset, 0, 6400, 720, null);
+                        // Hole
+                        g.setColor(new Color(7, 50, 96, 255));
+                        g.fillRect(1950, 300, 90, 300);
                     }
                     case 2 -> {
-                        g.drawImage(section2Sprite, -xLvlOffset, 0, 6400, 720, null);
-                        // DRAWING TILES (COMPLICATED ONE)
                         g.drawImage(TileManager.tiles[0].image, 631 - xLvlOffset, 311, 48, 48, null);
                         g.drawImage(TileManager.tiles[0].image, 681 - xLvlOffset, 311, 48, 48, null);
                         g.drawImage(TileManager.tiles[0].image, 731 - xLvlOffset, 311, 48, 48, null);
@@ -62,13 +59,13 @@ public class LevelManager {
                 break;
 
             case 2:
+                g.setColor(new Color(90, 51, 148, 224));
+                g.fillRect(0, 0, 5* Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
                 switch (sectionNumber) {
                     case 1 -> {
-                        g.drawImage(section1Sprite, -xLvlOffset, 0, 6400, 720, null);
+
                     }
                     case 2 -> {
-                        g.drawImage(section2Sprite, -xLvlOffset, 0, 6400, 720, null);
-
                         // DRAWING TILES (COMPLICATED ONE)
                         g.drawImage(TileManager.tiles[0].image, 631 - xLvlOffset, 311, 48, 48, null);
                         g.drawImage(TileManager.tiles[0].image, 681 - xLvlOffset, 311, 48, 48, null);
@@ -83,14 +80,8 @@ public class LevelManager {
                 g.setColor(new Color(29, 81, 58));
                 g.fillRect(0, 0, 6400, 720);
                 switch (sectionNumber) {
-                    case 1 -> {
-//                        g.setColor(new Color(29, 81, 58));
-//                        g.fillRect(0, 0, 6400, 720);
-                    }
-                    case 2 -> {
-                        g.setColor(new Color(4, 50, 30));
-                        g.fillRect(0, 0, 6400, 720);
-                    }
+                    case 1 -> {}
+                    case 2 -> {}
                 }
                 break;
 
@@ -136,21 +127,5 @@ public class LevelManager {
 
     public void setSectionNumber(int sectionNumber) {
         this.sectionNumber = sectionNumber;
-    }
-
-    public BufferedImage getSection1Sprite() {
-        return section1Sprite;
-    }
-
-    public void setSection1Sprite(BufferedImage section1Sprite) {
-        this.section1Sprite = section1Sprite;
-    }
-
-    public BufferedImage getSection2Sprite() {
-        return section2Sprite;
-    }
-
-    public void setSection2Sprite(BufferedImage section2Sprite) {
-        this.section2Sprite = section2Sprite;
     }
 }

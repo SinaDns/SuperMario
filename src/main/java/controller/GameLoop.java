@@ -1,10 +1,9 @@
 package controller;
 
 import model.Game;
-import model.IO;
-import view.GameFrame;
-import view.GamePanel;
-import view.MainFrame;
+import view.frames.GameFrame;
+import view.panels.GamePanel;
+import view.frames.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
