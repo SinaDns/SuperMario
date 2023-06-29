@@ -85,8 +85,6 @@ public class MainFrame extends JFrame {
         });
 
 
-
-
         frame = new JFrame();
         frame.setBackground(Color.DARK_GRAY);
         frame.setLayout(null);

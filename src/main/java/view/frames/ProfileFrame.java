@@ -48,7 +48,7 @@ public class ProfileFrame extends JFrame {
             }
         });
 
-        scoreLabel = new JLabel("Your HighScore is: " +  User.loggedInUser.get(0).getAllScores().get(0));
+        scoreLabel = new JLabel("Your HighScore is: " + User.loggedInUser.get(0).getAllScores().get(0));
         scoreLabel.setFont(new Font("Courier", Font.PLAIN, 25));
         scoreLabel.setBounds(150, 320, 500, 100);
 
@@ -66,10 +66,6 @@ public class ProfileFrame extends JFrame {
         username = new JLabel("Your Username: " + User.loggedInUser.get(0).getUsername());
         username.setFont(new Font("Courier", Font.PLAIN, 25));
         username.setBounds(150, 200, 450, 80);
-
-
-
-
 
 
         frame = new JFrame();
@@ -90,7 +86,6 @@ public class ProfileFrame extends JFrame {
         frame.setVisible(true);
     }
 }
-
 
 
 //  panel = new JPanel();

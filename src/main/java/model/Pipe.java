@@ -3,7 +3,6 @@ package model;
 import config.ImageAddresses;
 import controller.LevelManager;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Pipe {

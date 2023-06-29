@@ -10,11 +10,6 @@ import java.io.IOException;
 public class IO {
 
     private static final IO instance = new IO();
-
-    public static IO getInstance() {
-        return instance;
-    }
-
     ObjectMapper objectMapper;
 
     private IO() {
@@ -22,6 +17,9 @@ public class IO {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
+    public static IO getInstance() {
+        return instance;
+    }
 
     public void save() {
 

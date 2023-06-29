@@ -36,7 +36,6 @@ public class NukeBird implements Moveable {
         }
 
 
-
         Timer timer = new Timer(3000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

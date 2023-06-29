@@ -23,57 +23,13 @@ public class GraphicalGoompa implements Drawable {
     @Override
     public void draw(Graphics g, int xLvlOffset) {
 
-        g.drawImage(goompaImage, goompa.x - xLvlOffset, goompa.y, goompa.width, goompa.height, null);
+        if (goompa.isAlive)
+            g.drawImage(goompaImage, goompa.x - xLvlOffset, goompa.y, goompa.width, goompa.height, null);
 
-//        switch (levelManager.levelNumber) {
-//
-//            case 1:
-//                switch (levelManager.sectionNumber) {
-//
-//                    case 1:
-//                        break;
-//
-//                    case 2:
-//                        break;
-//                }
-//                break;
-//
-//
-//            case 2:
-//                switch (levelManager.sectionNumber) {
-//
-//                    case 1:
-//                        break;
-//
-//                    case 2:
-//                        break;
-//                }
-//                break;
-//
-//
-//            case 3:
-//                switch (levelManager.sectionNumber) {
-//
-//                    case 1:
-//                        break;
-//
-//                    case 2:
-//                        break;
-//                }
-//                break;
-//
-//
-//            case 5:
-//                switch (levelManager.sectionNumber) {
-//
-//                    case 1:
-//                        break;
-//
-//                    case 2:
-//                        break;
-//                }
-//                break;
-//        }
+
+        System.out.println(goompa.isAlive);
+
+
     }
 
 

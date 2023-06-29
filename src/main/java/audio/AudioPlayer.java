@@ -19,13 +19,11 @@ public class AudioPlayer {
     public static int ATTACK_2 = 5;
     public static int ATTACK_3 = 6;
     public static int CRACK_SHIELD = 7;
-
-
+    private final Random random = new Random();
     private Clip[] songs, effects;
     private int currentSongID;
     private float volume = 1f;
     private boolean isSongMuted, isEffectMuted;
-    private final Random random = new Random();
 
     public AudioPlayer() {
         loadSongs();

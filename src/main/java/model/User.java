@@ -58,16 +58,6 @@ public class User {
 
     }
 
-
-    void addName(User user) {
-//        for (model.User esm : users) {
-//            if (esm.username.equals(user.username)) {
-//                return;
-//            }
-//        }
-        users.add(user);
-    }
-
     public static void login(String username, String password) {
         User user = getUser(username);
         if (user == null) {
@@ -98,7 +88,6 @@ public class User {
         return null;
     }
 
-
     public static void getAndCheckPassword(User user, String password) {
         boolean success = false;
 
@@ -113,7 +102,6 @@ public class User {
         }
 
     }
-
 
     public static boolean checkUsername(String username) {
 
@@ -137,6 +125,14 @@ public class User {
         return username;
     }
 
+    void addName(User user) {
+//        for (model.User esm : users) {
+//            if (esm.username.equals(user.username)) {
+//                return;
+//            }
+//        }
+        users.add(user);
+    }
 
     public String getUsername() {
         return username;

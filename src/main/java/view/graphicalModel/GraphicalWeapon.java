@@ -25,9 +25,9 @@ public class GraphicalWeapon implements Drawable {
 
     @Override
     public void draw(Graphics g, int xLvlOffset) {
-        if (player.weapon) {
-            System.out.println("keshidane weapon");
-            g.drawImage(marioWeapon, weapon.x - xLvlOffset, player.hitBox.y - 30, 30, 60, null);
-        }
+
+        if (player.weapon)
+            g.drawImage(marioWeapon, weapon.x - xLvlOffset, weapon.y, weapon.width, weapon.height, null);
+
     }
 }

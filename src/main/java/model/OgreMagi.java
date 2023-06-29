@@ -38,7 +38,6 @@ public class OgreMagi implements Moveable {
         if (jumpShot)
             HP -= 3;
 
-
     }
 
 
@@ -65,8 +64,8 @@ public class OgreMagi implements Moveable {
         if (jumpAttack) {
             y += airSpeed;
 
-            if (y + width >= 500)
-                return;
+            if (y + width >= 500) {
+            }
         }
 
     }

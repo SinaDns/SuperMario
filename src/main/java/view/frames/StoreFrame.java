@@ -162,7 +162,6 @@ public class StoreFrame extends JFrame {
         panel.add(label5);
 
 
-
         frame = new JFrame();
         frame.add(redButton);
         frame.add(blackButton);

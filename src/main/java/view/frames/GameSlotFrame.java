@@ -13,25 +13,20 @@ public class GameSlotFrame extends JFrame {
 
 
     final JFrame frame;
-
+    final JButton slot1;
+    final JButton slot2;
+    final JButton slot3;
+    final JRadioButton easyBtn;
+    final JRadioButton mediumBtn;
+    final JRadioButton hardBtn;
     JLabel selectedChar;
-
     ButtonGroup btnGroup;
     JRadioButton pink;
     JRadioButton red;
     JRadioButton green;
     JRadioButton yellow;
     JRadioButton black;
-
     JButton backBtn;
-
-    final JButton slot1;
-    final JButton slot2;
-    final JButton slot3;
-
-    final JRadioButton easyBtn;
-    final JRadioButton mediumBtn;
-    final JRadioButton hardBtn;
 
 
     public GameSlotFrame() {
@@ -153,7 +148,6 @@ public class GameSlotFrame extends JFrame {
 
         hardBtn = new JRadioButton("Hard");
         hardBtn.setBounds(650, 780, 100, 40);
-
 
 
         frame.setBackground(new Color(111, 28, 28));

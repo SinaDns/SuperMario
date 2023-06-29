@@ -8,7 +8,7 @@
   "greenBought" : false,
   "blackBought" : false,
   "yellowBought" : false,
-  "redChoose" : false,
+  "redChoose" : true,
   "pinkChoose" : false,
   "greenChoose" : false,
   "blackChoose" : false,

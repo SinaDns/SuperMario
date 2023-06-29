@@ -5,7 +5,9 @@ import controller.LevelManager;
 import model.Player;
 import model.interfaces.Moveable;
 
-public class Spiny implements Moveable {
+import java.awt.geom.Rectangle2D;
+
+public class Spiny extends Enemy implements Moveable {
 
     public int x;
     public int y;
@@ -14,15 +16,18 @@ public class Spiny implements Moveable {
     public int distance;
     Player player;
     LevelManager levelManager;
+    public Rectangle2D.Double spinyRectangle;
     float spinySpeed = 0.01f;
     float acceleration = 0.02f;
 
-    public Spiny(int x, int y, LevelManager levelManager, int distance, Player player) {
+    public Spiny(int x, int y, int width, int height, LevelManager levelManager, int distance, Player player) {
+        super(x, y, width, height, levelManager);
         this.levelManager = levelManager;
         this.x = x;
         this.y = y;
         this.player = player;
         this.distance = distance;
+        spinyRectangle = new Rectangle2D.Double(x, y, width, height);
     }
 
     @Override

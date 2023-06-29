@@ -5,20 +5,16 @@ import model.interfaces.Moveable;
 
 public class Fireball implements Moveable {
 
+    public int x;
+    public int y;
+    public int width = 35;
+    public int height = 35;
+    public boolean setX = true;
     LevelManager levelManager;
     Player player;
+    float fireSpeed = 3.3f;
 
-    int x;
-    int y;
-    int width = 30;
-    int height = 30;
-
-    float fireSpeed = 1.5f;
-
-
-    Fireball(int x, int y, LevelManager levelManager, Player player) {
-        this.x = x;
-        this.y = y;
+    Fireball(LevelManager levelManager, Player player) {
         this.levelManager = levelManager;
         this.player = player;
     }
@@ -26,9 +22,17 @@ public class Fireball implements Moveable {
     @Override
     public void move() {
 
-        x -= fireSpeed;
+        if (player.isFire()) {
+
+            if (setX) {
+                x = player.hitBox.x + 40;
+                y = player.hitBox.y + 10;
+                setX = false;
+            }
+
+            x += fireSpeed;
+        }
 
     }
-
 
 }

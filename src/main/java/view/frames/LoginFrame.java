@@ -19,7 +19,6 @@ public class LoginFrame extends JFrame {
     final JLabel passwordText;
 
 
-
     LoginFrame() {
 
         backBtn = new JButton("BACK");
@@ -80,7 +79,6 @@ public class LoginFrame extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-
 
 
 }

@@ -3,12 +3,10 @@ package controller;
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import config.Constants;
-import config.ImageAddresses;
 import model.Game;
 import model.Player;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class LevelManager {
 
@@ -17,7 +15,6 @@ public class LevelManager {
 
     public Player player;
     private Game game;
-
 
 
     public LevelManager(Game game, int levelNumber, int sectionNumber) {
@@ -41,7 +38,7 @@ public class LevelManager {
 
             case 1:
                 g.setColor(new Color(75, 145, 233, 255));
-                g.fillRect(0, 0, 5* Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+                g.fillRect(0, 0, 5 * Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
                 switch (sectionNumber) {
                     case 1 -> {
                         // Hole
@@ -60,7 +57,7 @@ public class LevelManager {
 
             case 2:
                 g.setColor(new Color(90, 51, 148, 224));
-                g.fillRect(0, 0, 5* Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+                g.fillRect(0, 0, 5 * Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
                 switch (sectionNumber) {
                     case 1 -> {
 
@@ -80,8 +77,10 @@ public class LevelManager {
                 g.setColor(new Color(29, 81, 58));
                 g.fillRect(0, 0, 6400, 720);
                 switch (sectionNumber) {
-                    case 1 -> {}
-                    case 2 -> {}
+                    case 1 -> {
+                    }
+                    case 2 -> {
+                    }
                 }
                 break;
 

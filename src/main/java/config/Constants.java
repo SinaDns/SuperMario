@@ -8,6 +8,9 @@ public class Constants {
     public final static int GAME_WIDTH = 1280;
     public final static int GAME_HEIGHT = 720;
 
+    public final static int leftBorder = (int) (0.5 * Constants.GAME_WIDTH);
+    public final static int rightBorder = (int) (0.5 * Constants.GAME_WIDTH);
+
 //    public final int BOUND_TO_NEXT_SECTION = (5 * GAME_WIDTH) - 100;
 
     public static final int FPS = 120;

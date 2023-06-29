@@ -18,10 +18,8 @@ public class Main {
         User.loggedInUser.add(0, user1);
 
 
-
-
 //        new FirstFrame();
-            new GameSlotFrame();
+        new GameSlotFrame();
 
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             @Override

@@ -42,10 +42,8 @@ public class Game implements Runnable {
     public boolean isGameEnded;
     public boolean isCalculatedScoreInSectionOne;
     public boolean isCalculatedScoreInSectionTwo;
-
     public TileManager tileManager;
     public LevelManager levelManager;
-
     public Mushroom mushroom;
     public Mushroom mushroom1;
     public Mushroom mushroom2;
@@ -54,13 +52,9 @@ public class Game implements Runnable {
     public Star star1;
     public Star star2;
     public Star star3;
-
     public Coin coin;
-
-    Weapon weapon;
     public Pipe pipe;
     public Checkpoint checkpoint;
-
     public Enemy enemy;
     public Goompa goompa;
     public Goompa goompa1;
@@ -76,19 +70,21 @@ public class Game implements Runnable {
     public Spiny spiny3;
     public NukeBird nukeBird;
     public Bomb bomb;
+    public Fireball fireball;
     public OgreMagi ogreMagi;
     public Plant plant;
-
     public int coins;
     public int lives = 3;
     public int score = 0;
     public int progressRate;
     public int progressRisk;
-
     public int distanceWithOgre;
     public int distanceWithSpiny;
     public ArrayList<Enemy> enemies;
     public ArrayList<Item> items;
+    int dyingCoins;
+    int checkpointsSaved;
+    Weapon weapon;
     GraphicalMario graphicalMario;
     GraphicalWeapon graphicalWeapon;
     GraphicalOgreMagi graphicalOgreMagi;
@@ -97,6 +93,9 @@ public class Game implements Runnable {
     GraphicalPipe graphicalPipe;
     GraphicalCheckpoint graphicalCheckpoint;
     GraphicalSpiny graphicalSpiny;
+    GraphicalSpiny graphicalSpiny1;
+    GraphicalSpiny graphicalSpiny2;
+    GraphicalSpiny graphicalSpiny3;
     GraphicalStar graphicalStar;
     GraphicalGoompa graphicalGoompa;
     GraphicalGoompa graphicalGoompa1;
@@ -108,6 +107,7 @@ public class Game implements Runnable {
     GraphicalKoopa graphicalKoopa3;
     GraphicalNukeBird graphicalNukeBird;
     GraphicalBomb graphicalBomb;
+    GraphicalFireball graphicalFireball;
     GraphicalMushroom graphicalMushroom;
     GraphicalMushroom graphicalMushroom1;
     GraphicalMushroom graphicalMushroom2;
@@ -115,6 +115,8 @@ public class Game implements Runnable {
     ArrayList<JFrame> frames;
     Timer timer;
     int time = 100;
+    MarioIntersection marioIntersection;
+    ArrayList<GraphicalGoompa> graphicalGoompas;
     private GameFrame gameFrame;
     private GamePanel gamePanel;
     private Thread gameThread;
@@ -144,10 +146,13 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        player = new Player(50, 100, 50, 80);
+        player = new Player(50, 100, 50, 80, levelManager);
         time = 100;
         levelManager = new LevelManager(player);
 
+        marioIntersection = new MarioIntersection(this);
+        enemies = new ArrayList<>();
+        graphicalGoompas = new ArrayList<>();
 
         if (isInSectionOne && isInLevelOne) {
             levelManager = new LevelManager(this, 1, 1);
@@ -176,26 +181,50 @@ public class Game implements Runnable {
         graphicalOgreMagi = new GraphicalOgreMagi(levelManager, ogreMagi);
 
         // Making Enemies
-        spiny = new Spiny(1600, 450, levelManager, distanceWithSpiny, player);
+        spiny = new Spiny(2600, 450, 50, 50, levelManager, distanceWithSpiny, player);
+        spiny1 = new Spiny(3600, 450, 50, 50, levelManager, distanceWithSpiny, player);
+        spiny2 = new Spiny(4600, 450, 50, 50, levelManager, distanceWithSpiny, player);
+        spiny3 = new Spiny(5600, 450, 50, 50, levelManager, distanceWithSpiny, player);
         graphicalSpiny = new GraphicalSpiny(levelManager, spiny);
+        graphicalSpiny1 = new GraphicalSpiny(levelManager, spiny1);
+        graphicalSpiny2 = new GraphicalSpiny(levelManager, spiny2);
+        graphicalSpiny3 = new GraphicalSpiny(levelManager, spiny3);
 
         koopa = new Koopa(1800, 450, levelManager);
-        koopa1 = new Koopa(1800, 450, levelManager);
-        koopa2 = new Koopa(1800, 450, levelManager);
-        koopa3 = new Koopa(1800, 450, levelManager);
+        koopa1 = new Koopa(2800, 450, levelManager);
+        koopa2 = new Koopa(3800, 450, levelManager);
+        koopa3 = new Koopa(5800, 450, levelManager);
         graphicalKoopa = new GraphicalKoopa(levelManager, koopa);
         graphicalKoopa1 = new GraphicalKoopa(levelManager, koopa1);
         graphicalKoopa2 = new GraphicalKoopa(levelManager, koopa2);
         graphicalKoopa3 = new GraphicalKoopa(levelManager, koopa3);
 
-        goompa = new Goompa(1300, 450, levelManager);
-        goompa1 = new Goompa(1500, 450, levelManager);
-        goompa2 = new Goompa(1700, 450, levelManager);
-        goompa3 = new Goompa(1900, 450, levelManager);
+
+//        for (int i = 0; i < 4; i++) {
+//            enemies.add(new Goompa(1300 + (200 * i), 450, 50, 50, levelManager));
+//            graphicalGoompas.add(new GraphicalGoompa(levelManager, (Goompa) enemies.get(i)));
+//        }
+
+
+        goompa = new Goompa(1300, 450, 50, 50, levelManager);
+        goompa1 = new Goompa(1500, 450, 50, 50, levelManager);
+        goompa2 = new Goompa(1700, 450, 50, 50, levelManager);
+        goompa3 = new Goompa(1900, 450, 50, 50, levelManager);
         graphicalGoompa = new GraphicalGoompa(levelManager, goompa);
         graphicalGoompa1 = new GraphicalGoompa(levelManager, goompa1);
         graphicalGoompa2 = new GraphicalGoompa(levelManager, goompa2);
         graphicalGoompa3 = new GraphicalGoompa(levelManager, goompa3);
+
+        enemies.add(goompa);
+        enemies.add(goompa1);
+        enemies.add(goompa2);
+        enemies.add(goompa3);
+
+        graphicalGoompas.add(graphicalGoompa);
+        graphicalGoompas.add(graphicalGoompa1);
+        graphicalGoompas.add(graphicalGoompa2);
+        graphicalGoompas.add(graphicalGoompa3);
+
 
         nukeBird = new NukeBird(levelManager, bomb);
         graphicalNukeBird = new GraphicalNukeBird(levelManager, nukeBird);
@@ -231,20 +260,49 @@ public class Game implements Runnable {
         weapon = new Weapon(levelManager, player);
         graphicalWeapon = new GraphicalWeapon(levelManager, player, weapon);
 
-        // TODO
-        tileManager = new TileManager(gamePanel);
+        fireball = new Fireball(levelManager, player);
+        graphicalFireball = new GraphicalFireball(levelManager, player, fireball);
 
-        if (isInSectionTwo)
-            tileManager = new TileManager(gamePanel);
+        tileManager = new TileManager(gamePanel);
     }
 
     public void update() {
 
-        progressRate = (int) (player.x / (5 * GAME_WIDTH));
+        player.x = player.hitBox.x;
+        player.y = player.hitBox.y;
+        player.width = player.hitBox.width;
+        player.height = player.hitBox.height + 40;
+
+        progressRate = (player.x / (5 * GAME_WIDTH));
         progressRisk = coins * progressRate;
+        dyingCoins = ((checkpointsSaved + 1) * coins + progressRisk) / (checkpointsSaved + 4);
+
+
+
+
+//        for (Enemy e : enemies) {
+//
+//            if (e instanceof Goompa)
+//                ((Goompa) e).move();
+//
+//        }
+//
+
+
+        for (Enemy e : enemies) {
+
+            if (e instanceof Goompa)
+                if (player.hitBox.intersects(e))
+                    e.isAlive = false;
+
+        }
+
+
 
 
         /* ---------------------------------------------- Death Mechanism ------------------------------------------- */
+
+        // ********* LEVEL 1
         if (isInLevelOne) {
             // SECTION 1
             if (isInSectionOne) {
@@ -252,6 +310,8 @@ public class Game implements Runnable {
                 if (player.hitBox.x + player.width >= 1950 && player.hitBox.x + player.width <= 2040
                         && player.hitBox.y + player.height >= 500) {
                     initClasses();
+                    if (score >= 30)
+                        score -= 30;
                     lives--;
                 }
                 // pipe
@@ -274,6 +334,8 @@ public class Game implements Runnable {
                 if (player.hitBox.x + player.width >= 1685 && player.hitBox.x + player.width <= 1800
                         && player.hitBox.y + player.height >= 500) {
                     initClasses();
+                    if (score >= 30)
+                        score -= 30;
                     lives--;
                 }
                 // pipe (pasha)
@@ -284,6 +346,22 @@ public class Game implements Runnable {
                 }
             }
         }
+
+        // ********* LEVEL 2
+
+        if (isInLevelTwo) {
+
+            if (isInSectionOne) {
+
+            }
+
+
+            if (isInSectionTwo) {
+
+            }
+
+        }
+
         /* ---------------------------------------------------------------------------------------------------------- */
 
         /* ------------------------------------------------ ENDING -------------------------------------------------- */
@@ -306,6 +384,10 @@ public class Game implements Runnable {
     }
 
     public void render(Graphics g) {
+
+//        for (GraphicalGoompa gg : graphicalGoompas) {
+//            gg.draw(g, player.xLvlOffset);
+//        }
 
         // TEST PRINTS:
 //        System.out.println("level: " + levelManager.levelNumber + " / section: " + levelManager.sectionNumber);
@@ -386,34 +468,35 @@ public class Game implements Runnable {
             if (levelManager.sectionNumber == 1) {
 
                 levelManager.draw(g, player.xLvlOffset, lives, coins, score);
+
                 tileManager.draw(g, player.xLvlOffset);
 
                 // Hole
                 g.setColor(new Color(75, 145, 233, 255));
-                g.fillRect(1950 - player.xLvlOffset, 500, 90, 300);
+                g.fillRect(1860 - player.xLvlOffset, 500, 130, 300);
 
-                // eating the coins
+                // eating coins
                 if ((player.hitBox.x <= 485 && player.hitBox.x >= 450)
                         && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 260))
-                    coin.drawingCoinsAtSectionOne[0] = true;
+                    coin.drawingCoinsAtLevelOneSectionOne[0] = true;
                 if ((player.hitBox.x <= 735 && player.hitBox.x >= 700)
                         && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                    coin.drawingCoinsAtSectionOne[1] = true;
+                    coin.drawingCoinsAtLevelOneSectionOne[1] = true;
                 if ((player.hitBox.x <= 835 && player.hitBox.x >= 800)
                         && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                    coin.drawingCoinsAtSectionOne[2] = true;
+                    coin.drawingCoinsAtLevelOneSectionOne[2] = true;
                 if ((player.hitBox.x <= 1435 && player.hitBox.x >= 1400)
                         && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 290))
-                    coin.drawingCoinsAtSectionOne[3] = true;
+                    coin.drawingCoinsAtLevelOneSectionOne[3] = true;
                 if ((player.hitBox.x <= 1785 && player.hitBox.x >= 1750)
                         && (player.hitBox.y + player.height <= 440 && player.hitBox.y + player.height >= 350))
-                    coin.drawingCoinsAtSectionOne[4] = true;
+                    coin.drawingCoinsAtLevelOneSectionOne[4] = true;
                 if ((player.hitBox.x <= 2035 && player.hitBox.x >= 2000)
                         && (player.hitBox.y + player.height <= 350 && player.hitBox.y + player.height >= 300))
-                    coin.drawingCoinsAtSectionOne[5] = true;
+                    coin.drawingCoinsAtLevelOneSectionOne[5] = true;
                 if ((player.hitBox.x <= 2535 && player.hitBox.x >= 2500)
                         && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                    coin.drawingCoinsAtSectionOne[6] = true;
+                    coin.drawingCoinsAtLevelOneSectionOne[6] = true;
 
 
                 graphicalCoin.draw(g, player.xLvlOffset);
@@ -434,50 +517,60 @@ public class Game implements Runnable {
                     graphicalStar.draw(g, player.xLvlOffset);
 
 
-
                 if (plant.x1Flower - player.xLvlOffset <= 1000)
                     plant.draw(g, player.xLvlOffset);
             }
 
             // SECTION TWO
             if (levelManager.sectionNumber == 2) {
+
                 levelManager.draw(g, player.xLvlOffset, lives, coins, score);
+                tileManager.draw(g, player.xLvlOffset);
+
+                // Hole
+                g.setColor(new Color(75, 145, 233, 255));
+                g.fillRect(1685 - player.xLvlOffset, 500, 115, 300);
 
                 // eating the coins
                 if ((player.hitBox.x <= 635 && player.hitBox.x >= 600)
                         && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 260))
-                    coin.drawingCoinsAtSectionTwo[0] = true;
+                    coin.drawingCoinsAtLevelOneSectionTwo[0] = true;
                 if ((player.hitBox.x <= 885 && player.hitBox.x >= 850)
                         && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                    coin.drawingCoinsAtSectionTwo[1] = true;
+                    coin.drawingCoinsAtLevelOneSectionTwo[1] = true;
                 if ((player.hitBox.x <= 1135 && player.hitBox.x >= 1100)
                         && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                    coin.drawingCoinsAtSectionTwo[2] = true;
+                    coin.drawingCoinsAtLevelOneSectionTwo[2] = true;
                 if ((player.hitBox.x <= 1585 && player.hitBox.x >= 1550)
                         && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 290))
-                    coin.drawingCoinsAtSectionTwo[3] = true;
+                    coin.drawingCoinsAtLevelOneSectionTwo[3] = true;
                 if ((player.hitBox.x <= 1785 && player.hitBox.x >= 1750)
                         && (player.hitBox.y + player.height <= 440 && player.hitBox.y + player.height >= 350))
-                    coin.drawingCoinsAtSectionTwo[4] = true;
+                    coin.drawingCoinsAtLevelOneSectionTwo[4] = true;
                 if ((player.hitBox.x <= 2035 && player.hitBox.x >= 2000)
                         && (player.hitBox.y + player.height <= 335 && player.hitBox.y + player.height >= 300))
-                    coin.drawingCoinsAtSectionTwo[5] = true;
+                    coin.drawingCoinsAtLevelOneSectionTwo[5] = true;
                 if ((player.hitBox.x <= 3535 && player.hitBox.x >= 3500)
                         && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
-                    coin.drawingCoinsAtSectionTwo[6] = true;
+                    coin.drawingCoinsAtLevelOneSectionTwo[6] = true;
 
                 graphicalCoin.draw(g, player.xLvlOffset);
 
                 graphicalMushroom1.draw(g, player.xLvlOffset);
                 mushroom1.move();
 
+                graphicalSpiny1.draw(g, player.xLvlOffset);
+                spiny1.move();
+
                 graphicalGoompa1.draw(g, player.xLvlOffset);
                 goompa1.move();
+
+                graphicalKoopa1.draw(g, player.xLvlOffset);
+                koopa1.move();
 
                 if (plant.x2Flower - player.xLvlOffset <= 1000)
                     plant.draw(g, player.xLvlOffset);
 
-                tileManager.draw(g, player.xLvlOffset);
             }
         }
         /* -------------------------------------------------------------------------------------------------------- */
@@ -491,12 +584,41 @@ public class Game implements Runnable {
                 levelManager.draw(g, player.xLvlOffset, lives, coins, score);
                 tileManager.draw(g, player.xLvlOffset);
 
+//                if ((player.hitBox.x <= 485 && player.hitBox.x >= 450)
+//                        && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 260))
+//                    coin.drawingCoinsAtLevelTwoSectionOne[0] = true;
+//                if ((player.hitBox.x <= 735 && player.hitBox.x >= 700)
+//                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+//                    coin.drawingCoinsAtLevelTwoSectionOne[1] = true;
+//                if ((player.hitBox.x <= 835 && player.hitBox.x >= 800)
+//                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+//                    coin.drawingCoinsAtLevelTwoSectionOne[2] = true;
+//                if ((player.hitBox.x <= 1435 && player.hitBox.x >= 1400)
+//                        && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 290))
+//                    coin.drawingCoinsAtLevelTwoSectionOne[3] = true;
+//                if ((player.hitBox.x <= 1785 && player.hitBox.x >= 1750)
+//                        && (player.hitBox.y + player.height <= 440 && player.hitBox.y + player.height >= 350))
+//                    coin.drawingCoinsAtLevelTwoSectionOne[4] = true;
+//                if ((player.hitBox.x <= 2035 && player.hitBox.x >= 2000)
+//                        && (player.hitBox.y + player.height <= 350 && player.hitBox.y + player.height >= 300))
+//                    coin.drawingCoinsAtLevelTwoSectionOne[5] = true;
+//                if ((player.hitBox.x <= 2535 && player.hitBox.x >= 2500)
+//                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+//                    coin.drawingCoinsAtLevelTwoSectionOne[6] = true;
+
+                graphicalCoin.draw(g, player.xLvlOffset);
+
                 graphicalMushroom2.draw(g, player.xLvlOffset);
                 mushroom2.move();
+
+                graphicalSpiny2.draw(g, player.xLvlOffset);
+                spiny2.move();
 
                 graphicalGoompa2.draw(g, player.xLvlOffset);
                 goompa2.move();
 
+                graphicalKoopa2.draw(g, player.xLvlOffset);
+                koopa2.move();
             }
 
 
@@ -505,13 +627,41 @@ public class Game implements Runnable {
                 levelManager.draw(g, player.xLvlOffset, lives, coins, score);
                 tileManager.draw(g, player.xLvlOffset);
 
+//               if ((player.hitBox.x <= 485 && player.hitBox.x >= 450)
+//                        && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 260))
+//                    coin.drawingCoinsAtLevelTwoSectionTwo[0] = true;
+//                if ((player.hitBox.x <= 735 && player.hitBox.x >= 700)
+//                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+//                    coin.drawingCoinsAtLevelTwoSectionTwo[1] = true;
+//                if ((player.hitBox.x <= 835 && player.hitBox.x >= 800)
+//                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+//                    coin.drawingCoinsAtLevelTwoSectionTwo[2] = true;
+//                if ((player.hitBox.x <= 1435 && player.hitBox.x >= 1400)
+//                        && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 290))
+//                    coin.drawingCoinsAtLevelTwoSectionTwo[3] = true;
+//                if ((player.hitBox.x <= 1785 && player.hitBox.x >= 1750)
+//                        && (player.hitBox.y + player.height <= 440 && player.hitBox.y + player.height >= 350))
+//                    coin.drawingCoinsAtLevelTwoSectionTwo[4] = true;
+//                if ((player.hitBox.x <= 2035 && player.hitBox.x >= 2000)
+//                        && (player.hitBox.y + player.height <= 350 && player.hitBox.y + player.height >= 300))
+//                    coin.drawingCoinsAtLevelTwoSectionTwo[5] = true;
+//                if ((player.hitBox.x <= 2535 && player.hitBox.x >= 2500)
+//                        && (player.hitBox.y + player.height <= 550 && player.hitBox.y + player.height >= 460))
+//                    coin.drawingCoinsAtLevelTwoSectionTwo[6] = true;
+
                 graphicalCoin.draw(g, player.xLvlOffset);
 
                 graphicalMushroom3.draw(g, player.xLvlOffset);
                 mushroom3.move();
 
+                graphicalSpiny3.draw(g, player.xLvlOffset);
+                spiny3.move();
+
                 graphicalGoompa3.draw(g, player.xLvlOffset);
                 goompa3.move();
+
+                graphicalKoopa3.draw(g, player.xLvlOffset);
+                koopa3.move();
             }
         }
         /* -------------------------------------------------------------------------------------------------------- */
@@ -523,6 +673,8 @@ public class Game implements Runnable {
             if (levelManager.sectionNumber == 1) {
                 levelManager.draw(g, player.xLvlOffset, lives, coins, score);
                 tileManager.draw(g, player.xLvlOffset);
+
+                graphicalCoin.draw(g, player.xLvlOffset);
             }
 
 
@@ -530,6 +682,7 @@ public class Game implements Runnable {
             if (levelManager.sectionNumber == 2) {
                 levelManager.draw(g, player.xLvlOffset, lives, coins, score);
                 tileManager.draw(g, player.xLvlOffset);
+
                 graphicalCoin.draw(g, player.xLvlOffset);
             }
         }
@@ -546,13 +699,20 @@ public class Game implements Runnable {
 
         /* ------------------------------------------------ Hidden Parts -------------------------------------------- */
 
-        // LEVEL 1
-        if (Game.isInFirstHiddenPart)
-            levelManager.levelNumber = 5;
-
         if (levelManager.levelNumber == 5) {
-            levelManager.draw(g, player.xLvlOffset, lives, coins, score);
+            // HIDDEN IN LEVEL 1
+            if (levelManager.sectionNumber == 1) {
+                levelManager.draw(g, player.xLvlOffset, lives, coins, score);
+            }
+
+            // HIDDEN IN LEVEL 2
+            if (levelManager.sectionNumber == 2) {
+                levelManager.draw(g, player.xLvlOffset, lives, coins, score);
+            }
+
         }
+
+
 
         /* ---------------------------------------------------------------------------------------------------------- */
 
@@ -560,6 +720,7 @@ public class Game implements Runnable {
         g.setColor(Color.black);
         g.setFont(new Font("Courier", Font.BOLD, 40));
         g.drawString("Time: " + time, 745, 40);
+
 
         if (time == -1) {
             lives--;
@@ -634,12 +795,15 @@ public class Game implements Runnable {
         graphicalWeapon.draw(g, player.xLvlOffset);
         weapon.move();
 
+        graphicalFireball.draw(g, player.xLvlOffset);
+        fireball.move();
+
         graphicalMario.draw(g, player.xLvlOffset);
     }
 
     public void calculatingScore() {
         if (isInSectionOne) {
-            for (boolean e : coin.drawingCoinsAtSectionOne) {
+            for (boolean e : coin.drawingCoinsAtLevelOneSectionOne) {
                 if (e) {
                     coins++;
                 }
@@ -649,7 +813,7 @@ public class Game implements Runnable {
 
         if (isInSectionTwo && player.hitBox.x >= 5000) {
             for (int i = 0; i < 7; i++) {
-                if (coin.drawingCoinsAtSectionTwo[i]) {
+                if (coin.drawingCoinsAtLevelOneSectionTwo[i]) {
                     coins++;
                 }
             }
@@ -672,7 +836,7 @@ public class Game implements Runnable {
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                time--;
+//                time--;
                 System.out.println("createTime: " + time);
             }
         });
@@ -728,7 +892,7 @@ public class Game implements Runnable {
                 System.out.println("FPS: " + frames + " | UPS: " + updates);
 
                 // handling times
-//                time--;
+                time--;
 
                 frames = 0;
                 updates = 0;

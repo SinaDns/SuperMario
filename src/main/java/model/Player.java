@@ -4,41 +4,48 @@ package model;
 
 import config.Constants;
 import config.ImageAddresses;
+import controller.LevelManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import static config.Constants.PlayerConstants.IDLE;
 import static config.Constants.PlayerConstants.RUNNING;
+import static config.Constants.leftBorder;
+import static config.Constants.rightBorder;
 
 public class Player extends Entity {
 
+    LevelManager levelManager;
 
     public boolean weapon = false;
     public boolean isOnSlimeBlock = false;
     public boolean isOnMiniMode = false;
     public boolean isOnMegaMode = false;
-    public boolean isOnIcyMode = false;
+    public boolean isOnIcyMode = true;
     public int marioSelectionNumber = 4;
     public int xLvlOffset;
     public boolean activeShield = false;
     Timer timer;
+    private boolean fire;
     //    @JsonIgnore
     private BufferedImage[] afkAni;
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
     private boolean moving;
     private boolean left, right, jump;
-    private boolean fire;
-    private int leftBorder = (int) (0.5 * Constants.GAME_WIDTH);
-    private int rightBorder = (int) (0.5 * Constants.GAME_WIDTH);
+
+    Rectangle2D.Double marioRectangle;
+
     // pixels that we wouldn't see
     private int maxOffsetX = (5 * Constants.GAME_WIDTH) - Constants.GAME_WIDTH;
     private float xDrawOffset = 21 * Constants.SCALE;
     private float yDrawOffset = 4 * Constants.SCALE;
+
     // Jumping + Gravity
     private float airSpeed = 0f;
     private float gravity = 0.04f * Constants.SCALE;
@@ -46,14 +53,15 @@ public class Player extends Entity {
     private float fallSpeedAfterCollision = 0.5f * Constants.SCALE;
     private boolean inAir = false;
 
-    public Player(float x, float y, int width, int height) {
-        super(x, y, width, height);
+    public Player(int x, int y, int width, int height, LevelManager levelManager) {
+        super(x, y, width, height, levelManager);
         loadAnimations();
         initHitBox(x, y, 20 * Constants.SCALE, 27 * Constants.SCALE);
+        marioRectangle = new Rectangle2D.Double(x, y, hitBox.width, hitBox.height);
     }
 
-    public Player() {
-    }
+//    public Player() {
+//    }
 
     public void update() {
         updatePosition();
@@ -133,8 +141,7 @@ public class Player extends Entity {
             });
             timer.start();
             timer.setRepeats(false);
-        }
-        else {
+        } else {
             if (jump)
                 jump();
 
@@ -262,8 +269,7 @@ public class Player extends Entity {
         if (isSolid(x, y))
             if (isSolid(x + width, y + height))
                 if (isSolid(x + width, y))
-                    if (isSolid(x, y + height))
-                        return true;
+                    return isSolid(x, y + height);
 
         return false;
     }
@@ -348,8 +354,7 @@ public class Player extends Entity {
 
         if (Game.isInSectionTwo)
             // hole
-            if (hitbox.x >= 1400 && hitbox.x <= 1750)
-                return false;
+            return hitbox.x < 1400 || hitbox.x > 1750;
 
         return true;
     }
@@ -454,16 +459,8 @@ public class Player extends Entity {
         return leftBorder;
     }
 
-    public void setLeftBorder(int leftBorder) {
-        this.leftBorder = leftBorder;
-    }
-
     public int getRightBorder() {
         return rightBorder;
-    }
-
-    public void setRightBorder(int rightBorder) {
-        this.rightBorder = rightBorder;
     }
 
     public int getMaxOffsetX() {

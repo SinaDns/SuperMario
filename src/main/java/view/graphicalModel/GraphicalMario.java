@@ -1,6 +1,7 @@
 package view.graphicalModel;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import config.ImageAddresses;
 import controller.LevelManager;
 import model.Player;
@@ -12,10 +13,10 @@ import java.awt.image.BufferedImage;
 
 public class GraphicalMario implements Drawable {
 
-//    @JsonIgnore
-    private BufferedImage[] afkAni;
     LevelManager levelManager;
     Player player;
+    //    @JsonIgnore
+    private BufferedImage[] afkAni;
 
 
     public GraphicalMario(LevelManager levelManager, Player player) {
@@ -64,7 +65,6 @@ public class GraphicalMario implements Drawable {
                 afkAni[i] = imageBlack.getSubimage(i * 200, 0, 200, 280);
             }
     }
-
 
 
 }

@@ -5,11 +5,11 @@ import model.interfaces.Moveable;
 
 public class Koopa implements Moveable {
 
-    LevelManager levelManager;
     public int x;
     public int y;
     public int width = 50;
     public int height = 50;
+    LevelManager levelManager;
     float koopaSpeed = 0.03f;
 
     public Koopa(int x, int y, LevelManager levelManager) {

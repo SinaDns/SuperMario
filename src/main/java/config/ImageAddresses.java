@@ -1,7 +1,6 @@
 package config;
 
 import javax.imageio.ImageIO;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +34,7 @@ public class ImageAddresses {
 
     public static final String CHECKPOINT_FLAG = "Checkpoint-Flag.png";
     public static final String SWORD = "PipeSword.png";
+    public static final String FIREBALL = "Fireball.png";
 
     // Boss
     public static final String BOSS = "ogre_magi.png";
@@ -49,8 +49,7 @@ public class ImageAddresses {
     public static final String BOMB = "Bomb.png";
 
 
-
-    public static BufferedImage getSprite (String fileName) {
+    public static BufferedImage getSprite(String fileName) {
         File imageFile = new File("D:\\Coding Tutorial\\spam tamrin code\\SuperSuperSuperSuperMariooo\\src\\" + fileName);
         BufferedImage image = null;
 

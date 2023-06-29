@@ -2,8 +2,8 @@ package controller;
 
 import model.Game;
 import view.frames.GameFrame;
-import view.panels.GamePanel;
 import view.frames.MainFrame;
+import view.panels.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;

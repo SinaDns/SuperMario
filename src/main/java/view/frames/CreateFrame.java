@@ -52,8 +52,7 @@ public class CreateFrame extends JFrame {
                     new User(usernameField.getText(), passwordField.getText());
                     frame.dispose();
                     new FirstFrame();
-                }
-                else {
+                } else {
                     frame.dispose();
                     new CreateFrame();
                 }
@@ -76,7 +75,6 @@ public class CreateFrame extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-
 
 
 }

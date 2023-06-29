@@ -15,7 +15,6 @@ public class GraphicalSpiny implements Drawable {
     BufferedImage spinyImage;
 
 
-
     public GraphicalSpiny(LevelManager levelManager, Spiny spiny) {
         this.levelManager = levelManager;
         this.spiny = spiny;

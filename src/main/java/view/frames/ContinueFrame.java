@@ -11,11 +11,10 @@ import java.awt.event.ActionListener;
 public class ContinueFrame extends JFrame {
 
     final JFrame frame;
-
-    JButton backBtn;
     final JButton slot1;
     final JButton slot2;
     final JButton slot3;
+    JButton backBtn;
 
 
     ContinueFrame() {
@@ -31,11 +30,9 @@ public class ContinueFrame extends JFrame {
         });
 
 
-
-
         slot1 = new JButton("model.Game 1");
         slot1.setBounds(300, 180, 400, 120);
-          slot1.addActionListener(new ActionListener() {
+        slot1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
@@ -49,7 +46,8 @@ public class ContinueFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                User.loggedInUser.get(0).getGames().get(1).showPanel();            }
+                User.loggedInUser.get(0).getGames().get(1).showPanel();
+            }
         });
 
         slot3 = new JButton("model.Game 3");
@@ -59,7 +57,8 @@ public class ContinueFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 slot1.setText("model.Game 3");
                 frame.dispose();
-                User.loggedInUser.get(0).getGames().get(2).showPanel();            }
+                User.loggedInUser.get(0).getGames().get(2).showPanel();
+            }
         });
 
 

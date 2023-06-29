@@ -7,12 +7,12 @@ public class Weapon implements Moveable {
 
     public int x;
     public int y;
-    public int width = 30;
-    public int height = 60;
+    public int width = 40;
+    public int height = 80;
     public boolean setX = true;
     LevelManager levelManager;
     Player player;
-    float releaseSpeed = 1.5f;
+    float releaseSpeed = 3f;
 
     public Weapon(LevelManager levelManager, Player player) {
         this.player = player;
@@ -27,7 +27,7 @@ public class Weapon implements Moveable {
 
             if (setX) {
                 x = player.hitBox.x + 40;
-                System.out.println(x);
+                y = player.hitBox.y - 30;
                 setX = false;
             }
 

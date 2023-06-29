@@ -3,16 +3,19 @@ package model.enemies;
 import controller.LevelManager;
 import model.interfaces.Moveable;
 
+
 public class Goompa extends Enemy implements Moveable {
 
     public int x;
     public int y;
     public int width = 50;
     public int height = 50;
+//    public boolean isAlive = true;
     LevelManager levelManager;
     float goompaSpeed = 0.025f;
 
-    public Goompa(int x, int y, LevelManager levelManager) {
+    public Goompa(int x, int y, int width, int height, LevelManager levelManager) {
+        super(x, y, width, height, levelManager);
         this.x = x;
         this.y = y;
         this.levelManager = levelManager;
@@ -20,10 +23,9 @@ public class Goompa extends Enemy implements Moveable {
 
     public void move() {
 
-
         x -= goompaSpeed;
 
-
+        this.setLocation(x, 450);
     }
 
 }

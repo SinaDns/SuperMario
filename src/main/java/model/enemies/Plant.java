@@ -9,14 +9,13 @@ import java.awt.image.BufferedImage;
 
 public class Plant {
 
+    public int y1Flower = 355;
+    public int y2Flower = 312;
+    public int x1Flower = 3360;
+    public int x2Flower = 3000;
     LevelManager levelManager;
     BufferedImage plantImage;
     BufferedImage pashaImage;
-    public int y1Flower = 355;
-    public int y2Flower = 312;
-
-    public int x1Flower = 3360;
-    public int x2Flower = 3000;
 
 
     public Plant(LevelManager levelManager) {
@@ -24,7 +23,6 @@ public class Plant {
         plantImage = ImageAddresses.getSprite(ImageAddresses.FLOWER);
         pashaImage = ImageAddresses.getSprite(ImageAddresses.PASHA);
     }
-
 
 
     public void draw(Graphics g, int xlvloffset) {
