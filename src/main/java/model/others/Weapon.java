@@ -1,9 +1,10 @@
-package model;
+package model.others;
 
 import controller.LevelManager;
+import model.Player;
 import model.interfaces.Moveable;
 
-public class Weapon implements Moveable {
+public class Weapon extends Throwable implements Moveable {
 
     public int x;
     public int y;
@@ -14,9 +15,12 @@ public class Weapon implements Moveable {
     Player player;
     float releaseSpeed = 3f;
 
-    public Weapon(LevelManager levelManager, Player player) {
-        this.player = player;
+    public Weapon(int x, int y, int width, int height, LevelManager levelManager, Player player) {
+        super(x, y, width, height, levelManager);
+        this.x = x;
+        this.y = y;
         this.levelManager = levelManager;
+        this.player = player;
     }
 
     @Override

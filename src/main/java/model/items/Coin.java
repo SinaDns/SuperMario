@@ -6,7 +6,7 @@ import controller.LevelManager;
 import java.awt.image.BufferedImage;
 
 
-public class Coin {
+public class Coin extends Item {
 
     public int width = 35;
     public int height = 35;
@@ -19,21 +19,20 @@ public class Coin {
 
     LevelManager levelManager;
     BufferedImage coinImage;
-    int x;
-    int y;
-    boolean isEaten = false;
+    public int x;
+    public int y;
+    public boolean eat = false;
 
 
-    public Coin(LevelManager levelManager) {
+    public Coin(int x, int y, int width, int height, LevelManager levelManager) {
+        super(x, y, width, height, levelManager);
+        this.x = x;
+        this.y = y;
         coinImage = ImageAddresses.getSprite(ImageAddresses.COIN);
         this.levelManager = levelManager;
     }
 
-//    public Coin(int x, int y, LevelManager levelManager) {
-//        this.x = x;
-//        this.y = y;
-//        this.levelManager = levelManager;
-//    }
+
 
 
 }

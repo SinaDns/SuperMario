@@ -1,9 +1,10 @@
-package model;
+package model.others;
 
 import controller.LevelManager;
+import model.Player;
 import model.interfaces.Moveable;
 
-public class Fireball implements Moveable {
+public class Fireball extends Throwable implements Moveable {
 
     public int x;
     public int y;
@@ -14,7 +15,8 @@ public class Fireball implements Moveable {
     Player player;
     float fireSpeed = 3.3f;
 
-    Fireball(LevelManager levelManager, Player player) {
+    public Fireball(int x, int y, int width, int height, LevelManager levelManager, Player player) {
+        super(x, y, width, height, levelManager);
         this.levelManager = levelManager;
         this.player = player;
     }
@@ -33,6 +35,7 @@ public class Fireball implements Moveable {
             x += fireSpeed;
         }
 
+        this.setLocation(x, y);
     }
 
 }

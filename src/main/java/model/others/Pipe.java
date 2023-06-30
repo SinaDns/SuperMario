@@ -1,4 +1,4 @@
-package model;
+package model.others;
 
 import config.ImageAddresses;
 import controller.LevelManager;

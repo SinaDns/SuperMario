@@ -1,9 +1,13 @@
 package model;
 
 import controller.TileManager;
+import model.boss.OgreMagi;
 import model.enemies.*;
 import model.items.Coin;
 import model.items.Star;
+import model.others.Bomb;
+import model.others.Checkpoint;
+import model.others.Pipe;
 
 public class GameState {
     public TileManager tileManager;

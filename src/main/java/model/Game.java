@@ -4,14 +4,24 @@ import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import controller.IO;
 import controller.LevelManager;
 import controller.TileManager;
+import model.boss.OgreMagi;
 import model.enemies.*;
 import model.items.Coin;
 import model.items.Item;
 import model.items.Mushroom;
 import model.items.Star;
+import model.others.Throwable;
+import model.others.*;
+import view.GraphicalModel.*;
+import view.GraphicalModel.GraphicalEnemies.GraphicalGoompa;
+import view.GraphicalModel.GraphicalEnemies.GraphicalKoopa;
+import view.GraphicalModel.GraphicalEnemies.GraphicalNukeBird;
+import view.GraphicalModel.GraphicalEnemies.GraphicalSpiny;
+import view.GraphicalModel.GraphicalItems.GraphicalCoin;
+import view.GraphicalModel.GraphicalItems.GraphicalMushroom;
+import view.GraphicalModel.GraphicalItems.GraphicalStar;
 import view.frames.GameFrame;
 import view.frames.MainFrame;
-import view.graphicalModel.*;
 import view.panels.GamePanel;
 
 import javax.swing.*;
@@ -26,8 +36,8 @@ import static config.Constants.*;
 @JsonIncludeProperties(value = {"player", "levelManager", "time"})
 public class Game implements Runnable {
 
-    public static boolean isInLevelOne = true;
-    public static boolean isInLevelTwo = false;
+    public static boolean isInLevelOne = false;
+    public static boolean isInLevelTwo = true;
     public static boolean isInLevelThree = false;
 
     public static boolean isInSectionOne = true;
@@ -82,6 +92,7 @@ public class Game implements Runnable {
     public int distanceWithSpiny;
     public ArrayList<Enemy> enemies;
     public ArrayList<Item> items;
+    public ArrayList<Coin> coinArrayList;
     int dyingCoins;
     int checkpointsSaved;
     Weapon weapon;
@@ -115,8 +126,8 @@ public class Game implements Runnable {
     ArrayList<JFrame> frames;
     Timer timer;
     int time = 100;
-    MarioIntersection marioIntersection;
     ArrayList<GraphicalGoompa> graphicalGoompas;
+    ArrayList<Throwable> throwables;
     private GameFrame gameFrame;
     private GamePanel gamePanel;
     private Thread gameThread;
@@ -146,38 +157,38 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
+
         player = new Player(50, 100, 50, 80, levelManager);
+        graphicalMario = new GraphicalMario(levelManager, player);
+
         time = 100;
         levelManager = new LevelManager(player);
 
-        marioIntersection = new MarioIntersection(this);
         enemies = new ArrayList<>();
+        items = new ArrayList<>();
+        throwables = new ArrayList<>();
+        coinArrayList = new ArrayList<>();
         graphicalGoompas = new ArrayList<>();
 
         if (isInSectionOne && isInLevelOne) {
             levelManager = new LevelManager(this, 1, 1);
         } else if (isInSectionTwo && isInLevelOne) {
             levelManager = new LevelManager(this, 1, 2);
-            System.out.println("1-2 if");
         } else if (isInSectionOne && isInLevelTwo) {
             levelManager = new LevelManager(this, 2, 1);
-            System.out.println("2-1 if");
         } else if (isInSectionTwo && isInLevelTwo) {
             levelManager = new LevelManager(this, 2, 2);
-            System.out.println("2-2 if");
         } else if (isInSectionOne && isInLevelThree) {
             levelManager = new LevelManager(this, 3, 1);
-            System.out.println("3-1 if");
         } else if (isInSectionTwo && isInLevelThree) {
             levelManager = new LevelManager(this, 3, 2);
         } else if (isInBossFight) {
             levelManager = new LevelManager(this, 4, 1);
         }
 
-        graphicalMario = new GraphicalMario(levelManager, player);
 
         // Making Boss
-        ogreMagi = new OgreMagi(levelManager, distanceWithOgre, player);
+        ogreMagi = new OgreMagi(1000, 330, 200, 200, levelManager, distanceWithOgre, player);
         graphicalOgreMagi = new GraphicalOgreMagi(levelManager, ogreMagi);
 
         // Making Enemies
@@ -190,14 +201,18 @@ public class Game implements Runnable {
         graphicalSpiny2 = new GraphicalSpiny(levelManager, spiny2);
         graphicalSpiny3 = new GraphicalSpiny(levelManager, spiny3);
 
-        koopa = new Koopa(1800, 450, levelManager);
-        koopa1 = new Koopa(2800, 450, levelManager);
-        koopa2 = new Koopa(3800, 450, levelManager);
-        koopa3 = new Koopa(5800, 450, levelManager);
+        enemies.add(spiny);
+
+        koopa = new Koopa(1800, 450, 50, 50, levelManager);
+        koopa1 = new Koopa(2800, 450, 50, 50, levelManager);
+        koopa2 = new Koopa(3800, 450, 50, 50, levelManager);
+        koopa3 = new Koopa(5800, 450, 50, 50, levelManager);
         graphicalKoopa = new GraphicalKoopa(levelManager, koopa);
         graphicalKoopa1 = new GraphicalKoopa(levelManager, koopa1);
         graphicalKoopa2 = new GraphicalKoopa(levelManager, koopa2);
         graphicalKoopa3 = new GraphicalKoopa(levelManager, koopa3);
+
+        enemies.add(koopa);
 
 
 //        for (int i = 0; i < 4; i++) {
@@ -226,42 +241,63 @@ public class Game implements Runnable {
         graphicalGoompas.add(graphicalGoompa3);
 
 
-        nukeBird = new NukeBird(levelManager, bomb);
+        nukeBird = new NukeBird(2500, 70, 57, 100, levelManager);
         graphicalNukeBird = new GraphicalNukeBird(levelManager, nukeBird);
+        enemies.add(nukeBird);
 
         plant = new Plant(levelManager);
         graphicalPlant = new GraphicalPlant(levelManager, plant);
 
         // Making Items
-        coin = new Coin(levelManager);
+        coin = new Coin(0, 0, 35, 35, levelManager);
         graphicalCoin = new GraphicalCoin(levelManager, coin);
 
-        mushroom = new Mushroom(700, 450, levelManager);
-        mushroom1 = new Mushroom(1700, 450, levelManager);
-        mushroom2 = new Mushroom(2700, 450, levelManager);
-        mushroom3 = new Mushroom(4600, 450, levelManager);
-        graphicalMushroom = new GraphicalMushroom(levelManager, mushroom);
-        graphicalMushroom1 = new GraphicalMushroom(levelManager, mushroom1);
-        graphicalMushroom2 = new GraphicalMushroom(levelManager, mushroom2);
-        graphicalMushroom3 = new GraphicalMushroom(levelManager, mushroom3);
+        for (int i = 0; i < 7; i++) {
+            coinArrayList.add(new Coin(500 + (300 * i), 300, 35, 35, levelManager));
+        }
+
+
+//        mushroom = new Mushroom(700, 450, 50, 50, levelManager);
+//        mushroom1 = new Mushroom(1700, 450, 50, 50, levelManager);
+//        mushroom2 = new Mushroom(2700, 450, 50, 50, levelManager);
+//        mushroom3 = new Mushroom(4600, 450, 50, 50, levelManager);
+//        graphicalMushroom = new GraphicalMushroom(levelManager, mushroom);
+//        graphicalMushroom1 = new GraphicalMushroom(levelManager, mushroom1);
+//        graphicalMushroom2 = new GraphicalMushroom(levelManager, mushroom2);
+//        graphicalMushroom3 = new GraphicalMushroom(levelManager, mushroom3);
+//        items.add(mushroom);
+
+        for (int i = 0; i < 4; i++) {
+            items.add(new Mushroom(700 + 1000 * i, 450, 50, 50, levelManager));
+            graphicalMushroom = new GraphicalMushroom(levelManager, (Mushroom) items.get(i));
+            graphicalMushroom1 = new GraphicalMushroom(levelManager, (Mushroom) items.get(i));
+            graphicalMushroom2 = new GraphicalMushroom(levelManager, (Mushroom) items.get(i));
+            graphicalMushroom3 = new GraphicalMushroom(levelManager, (Mushroom) items.get(i));
+        }
+
 
         pipe = new Pipe(levelManager);
         graphicalPipe = new GraphicalPipe(levelManager);
 
-        star = new Star(640, 500, 48, 48, levelManager);
+        star = new Star(640, 500, 50, 50, levelManager);
         graphicalStar = new GraphicalStar(levelManager, star);
+        items.add(star);
 
         checkpoint = new Checkpoint(levelManager);
         graphicalCheckpoint = new GraphicalCheckpoint(levelManager, checkpoint);
 
-        bomb = new Bomb(levelManager);
+        bomb = new Bomb(0, 0, 25, 50, levelManager);
         graphicalBomb = new GraphicalBomb(levelManager, bomb);
 
-        weapon = new Weapon(levelManager, player);
+        weapon = new Weapon(0, 0, 40, 80, levelManager, player);
         graphicalWeapon = new GraphicalWeapon(levelManager, player, weapon);
 
-        fireball = new Fireball(levelManager, player);
+        fireball = new Fireball(0, 0, 50, 50, levelManager, player);
         graphicalFireball = new GraphicalFireball(levelManager, player, fireball);
+
+        throwables.add(fireball);
+        throwables.add(weapon);
+        throwables.add(bomb);
 
         tileManager = new TileManager(gamePanel);
     }
@@ -278,26 +314,54 @@ public class Game implements Runnable {
         dyingCoins = ((checkpointsSaved + 1) * coins + progressRisk) / (checkpointsSaved + 4);
 
 
+        for (Throwable throwable : throwables) {
+            for (Enemy enemy : enemies) {
 
-
-//        for (Enemy e : enemies) {
-//
-//            if (e instanceof Goompa)
-//                ((Goompa) e).move();
-//
-//        }
-//
-
-
-        for (Enemy e : enemies) {
-
-            if (e instanceof Goompa)
-                if (player.hitBox.intersects(e))
-                    e.isAlive = false;
+                if (throwable.intersects(enemy))
+                    enemy.isAlive = false;
+            }
 
         }
 
+        for (Enemy enemy : enemies) {
 
+            if (enemy instanceof Koopa) {
+                enemy.isAlive = false;
+            }
+
+            if (enemy instanceof Goompa)
+                if (player.hitBox.intersects(enemy))
+                    enemy.isAlive = false;
+
+            if (enemy instanceof NukeBird || enemy instanceof Spiny)
+                if (player.hitBox.intersects(enemy)) {
+                    initClasses();
+                    lives--;
+                }
+
+        }
+
+        for (Item item : items) {
+
+            if (player.hitBox.intersects(item)) {
+
+                System.out.println("oomad too if");
+
+                if (item instanceof Mushroom) {
+//                    mushroom.isUsed = true;
+                    ((Mushroom) item).isUsed = true;
+                    System.out.println(((Mushroom) item).isUsed);
+                }
+
+                if (item instanceof Star) {
+                    star.setUsed(true);
+                    player.activeShield = true;
+                }
+
+            }
+
+        }
+//        System.out.println(star.x + " - " + star.y + " - " + star.width + " - " + star.height);
 
 
         /* ---------------------------------------------- Death Mechanism ------------------------------------------- */
@@ -321,12 +385,13 @@ public class Game implements Runnable {
                     lives--;
                 }
 
-                // star logic
-                if (player.hitBox.x + player.width >= 620 && player.hitBox.x + player.width <= 680
-                        && player.hitBox.y + player.height >= 250 && player.hitBox.y + player.height <= 310) {
-                    star.setUsed(true);
-                    player.activeShield = true;
-                }
+//                // star logic
+//                if (player.hitBox.x + player.width >= 620 && player.hitBox.x + player.width <= 680
+//                        && player.hitBox.y + player.height >= 250 && player.hitBox.y + player.height <= 310) {
+//                    star.setUsed(true);
+//                    player.activeShield = true;
+//                }
+
             }
             // in section two
             if (isInSectionTwo) {
@@ -378,23 +443,8 @@ public class Game implements Runnable {
         }
         /* ---------------------------------------------------------------------------------------------------------- */
 
-        player.update();
-        if (!isInBossFight)
-            player.checkCloseToBorder();
-    }
-
-    public void render(Graphics g) {
-
-//        for (GraphicalGoompa gg : graphicalGoompas) {
-//            gg.draw(g, player.xLvlOffset);
-//        }
-
-        // TEST PRINTS:
-//        System.out.println("level: " + levelManager.levelNumber + " / section: " + levelManager.sectionNumber);
-//        System.out.println("in level one: " + isInLevelOne + " / in level two: " + isInLevelTwo);
-//        System.out.println("in section one: " + isInSectionOne + " / in section two: " + isInSectionTwo);
-
         /* ----------------------------------------- MOVING TO NEXT PART -------------------------------------------- */
+
         // Level 1 ... Section 1 going to 2
         if (player.hitBox.x >= BOUND_TO_NEXT_SECTION && levelManager.levelNumber == 1 && levelManager.sectionNumber == 1) {
             levelManager.sectionNumber = 2;
@@ -459,7 +509,40 @@ public class Game implements Runnable {
             initClasses();
         }
 
-        /* ------------------------------------------------------------------------------------------------------- */
+        /* ---------------------------------------------------------------------------------------------------------- */
+
+
+        player.update();
+        if (!isInBossFight)
+            player.checkCloseToBorder();
+    }
+
+    public void render(Graphics g) {
+
+        // ------------------------------------------- MOVING OBJECTS ----------------------------------------------- //
+
+        for (Enemy e : enemies) {
+
+            if (e instanceof Goompa)
+                ((Goompa) e).move();
+
+        }
+
+        for (Item item : items) {
+
+            if (item instanceof Mushroom)
+                ((Mushroom) item).move();
+
+
+            if (item instanceof Star)
+                ((Star) item).move();
+
+        }
+
+//        for (GraphicalGoompa gg : graphicalGoompas) {
+//            gg.draw(g, player.xLvlOffset);
+//        }
+
 
         /* ------------------------------------------------- LEVEL 1 --------------------------------------------- */
         // LEVEL ONE DESIGNS
@@ -502,13 +585,13 @@ public class Game implements Runnable {
                 graphicalCoin.draw(g, player.xLvlOffset);
 
                 graphicalMushroom.draw(g, player.xLvlOffset);
-                mushroom.move();
+//                mushroom.move();
 
                 graphicalSpiny.draw(g, player.xLvlOffset);
                 spiny.move();
 
                 graphicalGoompa.draw(g, player.xLvlOffset);
-                goompa.move();
+//                goompa.move();
 
                 graphicalKoopa.draw(g, player.xLvlOffset);
                 koopa.move();
@@ -516,6 +599,7 @@ public class Game implements Runnable {
                 if (!star.isUsed())
                     graphicalStar.draw(g, player.xLvlOffset);
 
+//                star.move();
 
                 if (plant.x1Flower - player.xLvlOffset <= 1000)
                     plant.draw(g, player.xLvlOffset);
@@ -557,13 +641,13 @@ public class Game implements Runnable {
                 graphicalCoin.draw(g, player.xLvlOffset);
 
                 graphicalMushroom1.draw(g, player.xLvlOffset);
-                mushroom1.move();
+//                mushroom1.move();
 
                 graphicalSpiny1.draw(g, player.xLvlOffset);
                 spiny1.move();
 
                 graphicalGoompa1.draw(g, player.xLvlOffset);
-                goompa1.move();
+//                goompa1.move();
 
                 graphicalKoopa1.draw(g, player.xLvlOffset);
                 koopa1.move();
@@ -583,6 +667,15 @@ public class Game implements Runnable {
             if (levelManager.sectionNumber == 1) {
                 levelManager.draw(g, player.xLvlOffset, lives, coins, score);
                 tileManager.draw(g, player.xLvlOffset);
+
+
+                for (Coin coin : coinArrayList) {
+
+                    if (player.hitBox.intersects(coin)) {
+                        coin.eat = true;
+                    }
+
+                }
 
 //                if ((player.hitBox.x <= 485 && player.hitBox.x >= 450)
 //                        && (player.hitBox.y + player.height <= 380 && player.hitBox.y + player.height >= 260))
@@ -609,7 +702,7 @@ public class Game implements Runnable {
                 graphicalCoin.draw(g, player.xLvlOffset);
 
                 graphicalMushroom2.draw(g, player.xLvlOffset);
-                mushroom2.move();
+//                mushroom2.move();
 
                 graphicalSpiny2.draw(g, player.xLvlOffset);
                 spiny2.move();
@@ -652,7 +745,7 @@ public class Game implements Runnable {
                 graphicalCoin.draw(g, player.xLvlOffset);
 
                 graphicalMushroom3.draw(g, player.xLvlOffset);
-                mushroom3.move();
+//                mushroom3.move();
 
                 graphicalSpiny3.draw(g, player.xLvlOffset);
                 spiny3.move();
@@ -745,14 +838,14 @@ public class Game implements Runnable {
         /* ----------------------------------------- CALCULATE MECHANISM ------------------------------------- */
 
         // Updating the Score
-        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION - 200 && !isCalculatedScoreInSectionOne) {
+        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION - 100 && !isCalculatedScoreInSectionOne) {
             calculatingScore();
             isCalculatedScoreInSectionOne = true;
             isInSectionOne = false;
             isInSectionTwo = true;
         }
 
-        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION - 200 && levelManager.sectionNumber == 2 && !isCalculatedScoreInSectionTwo) {
+        if (player.hitBox.x >= BOUND_TO_NEXT_SECTION - 100 && levelManager.sectionNumber == 2 && !isCalculatedScoreInSectionTwo) {
             calculatingScore();
             isCalculatedScoreInSectionTwo = true;
             isInSectionOne = true;
@@ -802,7 +895,7 @@ public class Game implements Runnable {
     }
 
     public void calculatingScore() {
-        if (isInSectionOne) {
+        if (isInLevelOne && isInSectionOne) {
             for (boolean e : coin.drawingCoinsAtLevelOneSectionOne) {
                 if (e) {
                     coins++;
@@ -811,13 +904,28 @@ public class Game implements Runnable {
             score += (10 * coins) + (20 * lives) + (time);
         }
 
-        if (isInSectionTwo && player.hitBox.x >= 5000) {
+        if (isInLevelOne && isInSectionTwo && player.hitBox.x >= 5000) {
             for (int i = 0; i < 7; i++) {
                 if (coin.drawingCoinsAtLevelOneSectionTwo[i]) {
                     coins++;
                 }
             }
             score += (10 * coins) + (20 * lives) + (time);
+        }
+
+        if (isInLevelTwo && isInSectionOne) {
+
+            for (Coin coin : coinArrayList) {
+                if (coin.eat) coins++;
+            }
+
+
+            score += (10 * coins) + (20 * lives) + (time);
+
+        }
+
+        if (isInLevelTwo && isInSectionTwo) {
+
         }
 
         if (User.loggedInUser.get(0).allScores.get(0) <= score)

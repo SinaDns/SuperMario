@@ -1,9 +1,9 @@
-package view.graphicalModel;
+package view.GraphicalModel;
 
 import config.ImageAddresses;
 import controller.LevelManager;
 import model.Player;
-import model.Weapon;
+import model.others.Weapon;
 import view.Drawable;
 
 import java.awt.*;

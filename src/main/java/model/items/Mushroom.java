@@ -3,7 +3,7 @@ package model.items;
 import controller.LevelManager;
 import model.interfaces.Moveable;
 
-public class Mushroom implements Moveable {
+public class Mushroom extends Item implements Moveable {
 
     LevelManager levelManager;
     int x;
@@ -11,10 +11,11 @@ public class Mushroom implements Moveable {
     int width = 50;
     int height = 50;
     float mushroomSpeed = 0.2f;
-    boolean isUsed;
+    public boolean isUsed = false;
 
 
-    public Mushroom(int x, int y, LevelManager levelManager) {
+    public Mushroom(int x, int y, int width, int height, LevelManager levelManager) {
+        super(x, y, width, height, levelManager);
         this.x = x;
         this.y = y;
         this.levelManager = levelManager;
@@ -23,38 +24,7 @@ public class Mushroom implements Moveable {
     @Override
     public void move() {
         x -= mushroomSpeed;
+        this.setLocation(x, y);
     }
 
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
 }

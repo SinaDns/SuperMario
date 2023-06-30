@@ -1,4 +1,4 @@
-package model;
+package model.others;
 
 import controller.LevelManager;
 
@@ -12,7 +12,7 @@ public class Checkpoint {
     boolean isCaught = false;
 
 
-    Checkpoint(LevelManager levelManager) {
+    public Checkpoint(LevelManager levelManager) {
         this.levelManager = levelManager;
     }
 

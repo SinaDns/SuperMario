@@ -1,4 +1,4 @@
-package view.graphicalModel;
+package view.GraphicalModel.GraphicalItems;
 
 import config.ImageAddresses;
 import controller.LevelManager;
@@ -23,7 +23,11 @@ public class GraphicalMushroom implements Drawable {
 
     @Override
     public void draw(Graphics g, int xLvlOffset) {
-        g.drawImage(mushroomImage, mushroom.getX() - xLvlOffset, mushroom.getY(), mushroom.getWidth(), mushroom.getHeight(), null);
+
+        System.out.println(mushroom.isUsed);
+
+        if (!mushroom.isUsed)
+            g.drawImage(mushroomImage, (int) (mushroom.getX() - xLvlOffset), (int) mushroom.getY(), (int) mushroom.getWidth(), (int) mushroom.getHeight(), null);
     }
 
 

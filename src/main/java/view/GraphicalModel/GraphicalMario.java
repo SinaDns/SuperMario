@@ -1,4 +1,4 @@
-package view.graphicalModel;
+package view.GraphicalModel;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 

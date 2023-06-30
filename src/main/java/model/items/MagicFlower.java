@@ -1,10 +1,9 @@
 package model.items;
 
 import controller.LevelManager;
+import model.interfaces.Moveable;
 
-import java.awt.geom.Rectangle2D;
-
-public class MagicFlower {
+public class MagicFlower extends Item implements Moveable {
 
     LevelManager levelManager;
     public int x;
@@ -12,17 +11,17 @@ public class MagicFlower {
     public int width = 50;
     public int height = 50;
 
-    Rectangle2D.Double magicFlowerRect;
 
-
-    public MagicFlower(int x, int y, LevelManager levelManager) {
+    public MagicFlower(int x, int y, int width, int height, LevelManager levelManager) {
+        super(x, y, width, height, levelManager);
         this.x = x;
         this.y = y;
         this.levelManager = levelManager;
-        magicFlowerRect = new Rectangle2D.Double(0, 0, 50, 50);
     }
 
+    @Override
+    public void move() {
 
-
+    }
 
 }

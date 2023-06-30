@@ -10,7 +10,6 @@ public class Goompa extends Enemy implements Moveable {
     public int y;
     public int width = 50;
     public int height = 50;
-//    public boolean isAlive = true;
     LevelManager levelManager;
     float goompaSpeed = 0.025f;
 
@@ -22,10 +21,8 @@ public class Goompa extends Enemy implements Moveable {
     }
 
     public void move() {
-
         x -= goompaSpeed;
-
-        this.setLocation(x, 450);
+        this.setLocation(x, y);
     }
 
 }

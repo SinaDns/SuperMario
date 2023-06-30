@@ -14,7 +14,7 @@ public class Constants {
 //    public final int BOUND_TO_NEXT_SECTION = (5 * GAME_WIDTH) - 100;
 
     public static final int FPS = 120;
-    public static final int UPS = 200;
+    public static final int UPS = 120;
 
     public final static float SCALE = 1.5f;
     public final static int TILES_DEFAULT_SIZE = 32;

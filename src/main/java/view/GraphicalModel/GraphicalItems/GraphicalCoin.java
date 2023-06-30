@@ -1,4 +1,4 @@
-package view.graphicalModel;
+package view.GraphicalModel.GraphicalItems;
 
 import config.ImageAddresses;
 import controller.LevelManager;
@@ -59,37 +59,17 @@ public class GraphicalCoin implements Drawable {
 
 
         // DRAWING COINS AT LEVEL 2
+
         if (levelManager.levelNumber == 2 && levelManager.sectionNumber == 1) {
-            if (!coin.drawingCoinsAtLevelOneSectionOne[0])
-                g.drawImage(coinImage, 1250 - xLvlOffset, 260, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionOne[1])
-                g.drawImage(coinImage, 1700 - xLvlOffset, 460, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionOne[2])
-                g.drawImage(coinImage, 2000 - xLvlOffset, 460, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionOne[3])
-                g.drawImage(coinImage, 2500 - xLvlOffset, 290, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionOne[4])
-                g.drawImage(coinImage, 3550 - xLvlOffset, 350, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionOne[5])
-                g.drawImage(coinImage, 4200 - xLvlOffset, 300, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionOne[6])
-                g.drawImage(coinImage, 5100 - xLvlOffset, 460, 35, 35, null);
-        } else if (levelManager.levelNumber == 2 && levelManager.sectionNumber == 2) {
-            if (!coin.drawingCoinsAtLevelOneSectionTwo[0])
-                g.drawImage(coinImage, 900 - xLvlOffset, 260, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionTwo[1])
-                g.drawImage(coinImage, 1450 - xLvlOffset, 460, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionTwo[2])
-                g.drawImage(coinImage, 2000 - xLvlOffset, 460, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionTwo[3])
-                g.drawImage(coinImage, 2650 - xLvlOffset, 290, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionTwo[4])
-                g.drawImage(coinImage, 3350 - xLvlOffset, 350, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionTwo[5])
-                g.drawImage(coinImage, 4000 - xLvlOffset, 300, 35, 35, null);
-            if (!coin.drawingCoinsAtLevelOneSectionTwo[6])
-                g.drawImage(coinImage, 4700 - xLvlOffset, 460, 35, 35, null);
+
+            for (Coin coin : levelManager.getGame().coinArrayList) {
+
+                if (!coin.eat)
+                    g.drawImage(coinImage, coin.x - xLvlOffset, coin.y, 35, 35, null);
+            }
+
         }
+
 
     }
 

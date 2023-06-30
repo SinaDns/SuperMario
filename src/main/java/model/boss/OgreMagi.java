@@ -1,13 +1,15 @@
-package model;
+package model.boss;
 
 import config.Constants;
 import controller.LevelManager;
+import model.Player;
+import model.enemies.Enemy;
 import model.interfaces.Moveable;
 
-public class OgreMagi implements Moveable {
+public class OgreMagi extends Enemy implements Moveable {
 
-    public int x = 1000;
-    public int y = 330;
+    public int x;
+    public int y;
     public int width = 200;
     public int height = 200;
     public int HP = 20;
@@ -20,7 +22,8 @@ public class OgreMagi implements Moveable {
     boolean normalShot;
     boolean jumpShot;
 
-    public OgreMagi(LevelManager levelManager, int distance, Player player) {
+    public OgreMagi(int x, int y, int width, int height, LevelManager levelManager, int distance, Player player) {
+        super(x, y, width, height, levelManager);
         this.levelManager = levelManager;
         this.distance = distance;
         this.player = player;

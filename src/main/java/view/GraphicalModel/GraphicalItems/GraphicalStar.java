@@ -1,4 +1,4 @@
-package view.graphicalModel;
+package view.GraphicalModel.GraphicalItems;
 
 import config.ImageAddresses;
 import controller.LevelManager;
@@ -23,7 +23,8 @@ public class GraphicalStar implements Drawable {
     @Override
     public void draw(Graphics g, int xLvlOffset) {
 
-        g.drawImage(starImage, 600 - xLvlOffset, 250, 48, 48, null);
+        if (!star.isUsed())
+            g.drawImage(starImage, star.x - xLvlOffset, 250, 48, 48, null);
 
     }
 

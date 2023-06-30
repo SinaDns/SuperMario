@@ -3,7 +3,7 @@ package model.enemies;
 import controller.LevelManager;
 import model.interfaces.Moveable;
 
-public class Koopa implements Moveable {
+public class Koopa extends Enemy implements Moveable {
 
     public int x;
     public int y;
@@ -12,7 +12,10 @@ public class Koopa implements Moveable {
     LevelManager levelManager;
     float koopaSpeed = 0.03f;
 
-    public Koopa(int x, int y, LevelManager levelManager) {
+    public boolean isAlive = true;
+
+    public Koopa(int x, int y, int width, int height, LevelManager levelManager) {
+        super(x, y, width, height, levelManager);
         this.x = x;
         this.y = y;
         this.levelManager = levelManager;
@@ -20,7 +23,9 @@ public class Koopa implements Moveable {
 
     @Override
     public void move() {
+
         x -= koopaSpeed;
+        this.setLocation(x, y);
 
         if (x == 0) {
             koopaSpeed *= -1;

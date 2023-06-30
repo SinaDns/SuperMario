@@ -1,8 +1,8 @@
-package view.graphicalModel;
+package view.GraphicalModel;
 
 import config.ImageAddresses;
 import controller.LevelManager;
-import model.OgreMagi;
+import model.boss.OgreMagi;
 import view.Drawable;
 
 import java.awt.*;

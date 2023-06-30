@@ -15,19 +15,11 @@ public class Enemy extends GameObject {
     public boolean isAlive = true;
 
 
-//    Enemy(int x, int y, LevelManager levelManager) {
-////        super(x, y, this.width, this.height);
-//        this.x = x;
-//        this.y = y;
-//        this.levelManager = levelManager;
-//    }
-
-//    public Enemy() {
-//        super();
-//    }
-
     public Enemy(int x, int y, int width, int height, LevelManager levelManager) {
         super(x, y, width, height, levelManager);
         this.levelManager = levelManager;
     }
+
+
+
 }

@@ -45,6 +45,7 @@ public class ImageAddresses {
     public static final String SPINY = "Spiny.png";
     public static final String GOOMPA = "Goompa.png";
     public static final String KOOPA = "Turtle.png";
+    public static final String KOOPA_PHASE_TWO = "TurtlePhaseTwo.png";
     public static final String NUKEBIRD = "NukeBird.png";
     public static final String BOMB = "Bomb.png";
 

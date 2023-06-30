@@ -1,4 +1,4 @@
-package view.graphicalModel;
+package view.GraphicalModel.GraphicalEnemies;
 
 import config.ImageAddresses;
 import controller.LevelManager;
@@ -24,7 +24,9 @@ public class GraphicalSpiny implements Drawable {
 
     @Override
     public void draw(Graphics g, int xLvlOffset) {
-        g.drawImage(spinyImage, spiny.x - xLvlOffset, spiny.y, spiny.width, spiny.height, null);
+
+        if (spiny.isAlive)
+            g.drawImage(spinyImage, spiny.x - xLvlOffset, spiny.y, spiny.width, spiny.height, null);
     }
 
 

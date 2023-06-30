@@ -1,4 +1,4 @@
-package view.graphicalModel;
+package view.GraphicalModel.GraphicalEnemies;
 
 import config.ImageAddresses;
 import controller.LevelManager;
@@ -25,10 +25,6 @@ public class GraphicalGoompa implements Drawable {
 
         if (goompa.isAlive)
             g.drawImage(goompaImage, goompa.x - xLvlOffset, goompa.y, goompa.width, goompa.height, null);
-
-
-        System.out.println(goompa.isAlive);
-
 
     }
 

@@ -1,7 +1,8 @@
-package model;
+package model.character;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import controller.LevelManager;
+import model.GameObject;
 import model.items.Coin;
 
 import java.awt.*;

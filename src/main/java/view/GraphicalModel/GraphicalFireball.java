@@ -1,8 +1,8 @@
-package view.graphicalModel;
+package view.GraphicalModel;
 
 import config.ImageAddresses;
 import controller.LevelManager;
-import model.Fireball;
+import model.others.Fireball;
 import model.Player;
 import view.Drawable;
 

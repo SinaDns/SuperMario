@@ -5,12 +5,12 @@ package model;
 import config.Constants;
 import config.ImageAddresses;
 import controller.LevelManager;
+import model.character.Entity;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import static config.Constants.PlayerConstants.IDLE;
@@ -39,8 +39,6 @@ public class Player extends Entity {
     private boolean moving;
     private boolean left, right, jump;
 
-    Rectangle2D.Double marioRectangle;
-
     // pixels that we wouldn't see
     private int maxOffsetX = (5 * Constants.GAME_WIDTH) - Constants.GAME_WIDTH;
     private float xDrawOffset = 21 * Constants.SCALE;
@@ -57,7 +55,6 @@ public class Player extends Entity {
         super(x, y, width, height, levelManager);
         loadAnimations();
         initHitBox(x, y, 20 * Constants.SCALE, 27 * Constants.SCALE);
-        marioRectangle = new Rectangle2D.Double(x, y, hitBox.width, hitBox.height);
     }
 
 //    public Player() {
@@ -131,11 +128,10 @@ public class Player extends Entity {
 
         // Mario Weapon
         if (isOnMiniMode && jump) {
-            System.out.println("tooye in if");
+
             timer = new Timer(2000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("kar kard.");
                     weapon = true;
                 }
             });
@@ -292,6 +288,8 @@ public class Player extends Entity {
         if (Game.isInLevelOne && Game.isInSectionOne) {
             // tiles in section 1
             if ((x >= 460 && x <= 690) && (y >= 308 && y <= 385))
+                return false;
+            if ((x >= 2000 && x <= 2590) && (y >= 300 && y <= 355))
                 return false;
             // slime tile
             if ((x >= 1000) && (x <= 1102) && (y >= 415) && (y <= 478)) {

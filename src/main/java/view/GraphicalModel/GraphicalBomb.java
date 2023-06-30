@@ -1,8 +1,8 @@
-package view.graphicalModel;
+package view.GraphicalModel;
 
 import config.ImageAddresses;
 import controller.LevelManager;
-import model.Bomb;
+import model.others.Bomb;
 import view.Drawable;
 
 import javax.swing.*;

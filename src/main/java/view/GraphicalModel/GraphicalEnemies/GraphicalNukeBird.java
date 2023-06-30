@@ -1,4 +1,4 @@
-package view.graphicalModel;
+package view.GraphicalModel.GraphicalEnemies;
 
 import config.ImageAddresses;
 import controller.LevelManager;
@@ -25,7 +25,7 @@ public class GraphicalNukeBird implements Drawable {
     @Override
     public void draw(Graphics g, int xLvlOffset) {
 
-        if (!Game.isInBossFight) {
+        if (!Game.isInBossFight && nukeBird.isAlive) {
             g.drawImage(nukebirdImage, nukeBird.x - xLvlOffset, nukeBird.y, nukeBird.width, nukeBird.height, null);
         }
 

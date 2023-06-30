@@ -1,8 +1,8 @@
-package view.graphicalModel;
+package view.GraphicalModel;
 
 import config.ImageAddresses;
 import controller.LevelManager;
-import model.Checkpoint;
+import model.others.Checkpoint;
 import view.Drawable;
 
 import java.awt.*;

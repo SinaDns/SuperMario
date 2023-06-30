@@ -5,8 +5,6 @@ import controller.LevelManager;
 import model.Player;
 import model.interfaces.Moveable;
 
-import java.awt.geom.Rectangle2D;
-
 public class Spiny extends Enemy implements Moveable {
 
     public int x;
@@ -16,18 +14,16 @@ public class Spiny extends Enemy implements Moveable {
     public int distance;
     Player player;
     LevelManager levelManager;
-    public Rectangle2D.Double spinyRectangle;
     float spinySpeed = 0.01f;
     float acceleration = 0.02f;
 
     public Spiny(int x, int y, int width, int height, LevelManager levelManager, int distance, Player player) {
         super(x, y, width, height, levelManager);
-        this.levelManager = levelManager;
         this.x = x;
         this.y = y;
+        this.levelManager = levelManager;
         this.player = player;
         this.distance = distance;
-        spinyRectangle = new Rectangle2D.Double(x, y, width, height);
     }
 
     @Override
@@ -35,6 +31,7 @@ public class Spiny extends Enemy implements Moveable {
 
         distance = (player.hitBox.x - this.x);
 
+        this.setLocation(x, y);
 
         if (Math.abs(distance) <= 8 * Constants.TILES_SIZE && player.hitBox.y + player.hitBox.height >= y + height - 30) {
 
